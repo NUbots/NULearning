@@ -170,17 +170,18 @@ This scope defines a namespace `baz` inside of the namespace `bar`.
     using Foo = kev::FooLongName;
 ```
 
-This is a type alias. These serve the same function as `typedef` statements, except they don't declare a new type like `typedef`s do. These can make things more concise, but we don't use them often, for the sake of clarity over conciseness.
+This is a type alias. These serve the same function as `typedef` statements, except they don't declare a new type like `typedef`s do. These can make things more concise but we don't use them often, for the sake of clarity over conciseness.
 
 ```{cpp, eval=FALSE}
-
-    // Adds this name into this namespace. We do use these often, to import function
-    // names, so we don't have huge, long function names within four nested namespaces
     using kev::FooLongName::getAlternativeConfig;
+```
 
+Adds this name into this namespace. We do use these often, to import function names, so we don't have huge, long function names within four nested namespaces
+
+```{cpp, eval=FALSE}
     class A {
         const int a = 0; // Can still be given another value by a constructor, by using
-                         // an initializer list
+                         // an initializer list, despite being `const`
 
         Foo thing_f{};   // Brace-initialisation - calls the associated constructor in-place
 
@@ -195,7 +196,7 @@ This is a type alias. These serve the same function as `typedef` statements, exc
             // This code is executed after the initializer list is finished doing things
         }
     };
-}
+} // namespace bar::baz
 ```
 
 This example makes liberal use of _namespaces_. Namespaces let us separate functions and objects into different spots where their symbols won't conflict. For example, we can have a function in the `bar::baz` namespace called `run()` with the same signature (besides the namespace) as `foo::run()`, or even `bar::run()`.
