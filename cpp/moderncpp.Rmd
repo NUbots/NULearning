@@ -111,7 +111,6 @@ struct A{
     }
 };
 ```
-
 # Auto Keyword
 
 The compiler infers the type at compile time.
@@ -121,9 +120,13 @@ The compiler infers the type at compile time.
 int main(){
     auto x = 5;
     int y = x;
-    std::cout << x << " " << y << std::endl;
+    std::cout << "x = " << x << ", y = " << y << std::endl;
 }
 ```
+
+### Task 1.
+
+Write a program which uses `auto` to define a string, then use auto to define a class or struct type.
 
 # Object Ownership
 
@@ -137,7 +140,8 @@ Firstly we'll create an object that owns some heap memory and will print out all
 
 ```{cpp, eval=FALSE}
 struct A{
-    int* x;
+    int* x; // Usually you shouldn't use "raw" pointers like this
+            // this is just for illustrative purposes
 };
 ```
 
@@ -147,15 +151,15 @@ We'll create the constructor and destructor similar as to what you would have do
 
 ```{cpp, eval=FALSE}
 // Default Constructor
-A():x(nullptr){}
+A() : x(nullptr) {}
 
 // Constructor
-A(const int& _x) : x(new int(_x)){
+A(const int& _x) : x(new int(_x)) {
     std::cout << "constructing A pointing to " << x << std::endl;
 }
 
 // Destructor
-~A(){
+~A() {
     std::cout << "destructing A, which pointed to " << x << std::endl;
     if (x != nullptr){
         delete x;
@@ -165,7 +169,7 @@ A(const int& _x) : x(new int(_x)){
 ```
 ```{cpp}
 #include "A.hpp"
-int main(){
+int main() {
     A a{1};
 }
 ```
@@ -178,7 +182,7 @@ We do not gain any ownership over anything relating to the parameter but we do n
 
 ```{cpp, eval=FALSE}
 // Copy constructor
-A(const A& other){
+A(const A& other) {
     std::cout << "copy constructor, old " << x
     << " other's " << other.x;
     x = new int(*other.x);
@@ -227,7 +231,7 @@ For a move constructor the parameter that is passed has had its ownership yielde
 
 ```{cpp, eval=FALSE}
 // Move constructor
-A(A&& other){
+A(A&& other) {
     std::cout << "move constructor, old " << x
     << " other's " << other.x;
     x = other.x;
@@ -240,7 +244,7 @@ A(A&& other){
 ```{cpp}
 #include <utility>
 #include "A.hpp"
-int main(){
+int main() {
     A a{1};
     A b(std::move(a));
 }
@@ -253,7 +257,7 @@ Similar to move construction, but if this object has ownership of something we m
 
 ```{cpp, eval=FALSE}
 // Move assignment
-A& operator=(A&& other){
+A& operator=(A&& other) {
     std::cout << "move assignment, old " << x
     << " other's " << other.x;
     if(x != nullptr){
@@ -271,7 +275,7 @@ A& operator=(A&& other){
 ```{cpp}
 #include <utility>
 #include "A.hpp"
-int main(){
+int main() {
     A a{1};
     A b{};
     b = std::move(a);
@@ -280,13 +284,13 @@ int main(){
 
 ## Smart Pointers
 
-To manage memory and ownership we use smart pointers, these will delete our objects for us with some caveats.
+To manage memory and ownership we use smart pointers. Smart pointers handle deletion of our objects for us with some caveats. You should use smart pointers over "raw" pointers whenever possible, which is when you have ownership of the memory, which is _almost_ always. The one common counterexample we run into is pointers to objects the webots API provides us. We can't call delete on these, because webots is in charge of managing them, so should not use smart pointers with them.
 
 ### Unique
 
 A unique pointer will manage an object on the heap, deleting it when the pointer goes out of scope.
 
-Always use `std::make_unique` as this solves some problems, never use `new`.
+Always use `std::make_unique` as this solves some problems. Never use `new`.
 
 ```{cpp}
 #include <memory>
@@ -319,7 +323,6 @@ int main(){
     std::unique_ptr<A> b = std::move(a);
 }
 ```
-
 
 ### Shared
 
