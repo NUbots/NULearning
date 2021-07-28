@@ -473,9 +473,9 @@ int main() {
 
 #### Loaning
 
-If another object needs to temporally have access to an object, you pass a reference to the pointed to object as a parameter. The object that gains temporary access and should assume that the object is freed after the function has returned.
+If another object needs to temporarily have access to an object, you pass a reference to the pointed to object as a parameter. The object that gains temporary access and should assume that the object is freed after the function has returned.
 
-Webots uses raw pointers to loan objects to us, this is why we do not use smart pointers with webots code.
+Webots uses raw pointers to loan objects to us, which is why we do not use smart pointers with webots code.
 
 ```{cpp}
 #include <memory>
@@ -506,14 +506,14 @@ int main(){
 
 ### Weak
 
-A weak pointer points to an object that is pointed to by a shared pointer, but does not count towards the total count. When accessing the object pointed to the weak pointer is temporarily upgraded to a shared pointer.
+A weak pointer points to an object that is pointed to by a shared pointer, but does not count towards the total count. When accessing the object pointed to the weak pointer is temporarily upgraded to a shared pointer. The main use of weak pointers is to get rid of circular references for shared pointers, often found in loops.
 
 ```{cpp}
 #include <memory>
 #include <iostream>
 struct node_bad {
     std::shared_ptr<node_bad> other;
-    node_bad(const std::shared_ptr<node_bad>& _other = std::shared_ptr<node_bad>()) : other(_other) {
+    node_bad(const std::shared_ptr<node_bad>& other_ = std::shared_ptr<node_bad>()) : other(other_) {
         std::cout << "Constructor " << this << std::endl;
     }
     ~node_bad() {
@@ -522,7 +522,7 @@ struct node_bad {
 };
 struct node_good {
     std::weak_ptr<node_good> other;
-    node_good(const std::weak_ptr<node_good>& _other = std::weak_ptr<node_good>()) : other(_other) {
+    node_good(const std::weak_ptr<node_good>& other_ = std::weak_ptr<node_good>()) : other(other_) {
         std::cout << "Constructor " << this << std::endl;
     }
     ~node_good() {
