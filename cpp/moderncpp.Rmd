@@ -475,6 +475,21 @@ int main() {
 
 ### Deleter
 
+For some legacy or c functions, there may be a custom delete function for that type.
+
+```{cpp}
+#include <memory>
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <netdb.h>
+int main() {
+    addrinfo hints;
+    addrinfo* info;
+    getaddrinfo("127.0.0.1", "80", &hints, &info);
+    auto a = std::unique_ptr<addrinfo, decltype(&freeaddrinfo)>(info, freeaddrinfo);
+}
+```
+
 # Standard Library Features
 
 # C++ Feautres

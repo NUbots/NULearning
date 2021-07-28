@@ -38,13 +38,13 @@ for (const auto& letter : letters) {
 }
 ```
 
-    ## /home/cameron/Documents/NULearning/cpp/.tmp_c/4N1L7.cpp:5:12: error: template argument for template type parameter must be a type
+    ## /home/cameron/Documents/NULearning/cpp/.tmp_c/gDRsr.cpp:5:12: error: template argument for template type parameter must be a type
     ## std::array<5, std::string> letters {"a", "b", "c", "d", "e"};
     ##            ^
     ## /usr/bin/../lib64/gcc/x86_64-pc-linux-gnu/11.1.0/../../../../include/c++/11.1.0/array:94:21: note: template parameter is declared here
     ##   template<typename _Tp, std::size_t _Nm>
     ##                     ^
-    ## /home/cameron/Documents/NULearning/cpp/.tmp_c/4N1L7.cpp:12:1: error: expected unqualified-id
+    ## /home/cameron/Documents/NULearning/cpp/.tmp_c/gDRsr.cpp:12:1: error: expected unqualified-id
     ## for (const auto& letter : letters) {
     ## ^
     ## 2 errors generated.
@@ -119,8 +119,8 @@ int main() {
 }
 ```
 
-    ## constructing A pointing to 0x562e8fedeeb0
-    ## destructing A, which pointed to 0x562e8fedeeb0
+    ## constructing A pointing to 0x55d605dfceb0
+    ## destructing A, which pointed to 0x55d605dfceb0
 
 ### Copy Constructor
 
@@ -150,10 +150,10 @@ int main(){
 }
 ```
 
-    ## constructing A pointing to 0x55892ee6beb0
-    ## copy construction, old 0 other's 0x55892ee6beb0 new 0x55892ee6cee0
-    ## destructing A, which pointed to 0x55892ee6cee0
-    ## destructing A, which pointed to 0x55892ee6beb0
+    ## constructing A pointing to 0x556b8a219eb0
+    ## copy construction, old 0 other's 0x556b8a219eb0 new 0x556b8a21aee0
+    ## destructing A, which pointed to 0x556b8a21aee0
+    ## destructing A, which pointed to 0x556b8a219eb0
 
 ### Copy Assignment
 
@@ -184,11 +184,11 @@ int main() {
 }
 ```
 
-    ## constructing A pointing to 0x56518db43eb0
-    ## constructing A pointing to 0x56518db44ee0
-    ## copy assignment, old 0x56518db44ee0 other's 0x56518db43eb0 new 0x56518db44f00
-    ## destructing A, which pointed to 0x56518db44f00
-    ## destructing A, which pointed to 0x56518db43eb0
+    ## constructing A pointing to 0x5606a288eeb0
+    ## constructing A pointing to 0x5606a288fee0
+    ## copy assignment, old 0x5606a288fee0 other's 0x5606a288eeb0 new 0x5606a288ff00
+    ## destructing A, which pointed to 0x5606a288ff00
+    ## destructing A, which pointed to 0x5606a288eeb0
 
 ### Move Constructor
 
@@ -219,9 +219,9 @@ int main() {
 }
 ```
 
-    ## constructing A pointing to 0x55a021a96eb0
-    ## move construction, old 0 other's 0x55a021a96eb0 new 0x55a021a96eb0
-    ## destructing A, which pointed to 0x55a021a96eb0
+    ## constructing A pointing to 0x55983f15deb0
+    ## move construction, old 0 other's 0x55983f15deb0 new 0x55983f15deb0
+    ## destructing A, which pointed to 0x55983f15deb0
     ## destructing A, which pointed to 0
 
 ### Move Assignment
@@ -257,9 +257,9 @@ int main() {
 }
 ```
 
-    ## constructing A pointing to 0x55d0a14c5eb0
-    ## move assignment, old 0 other's 0x55d0a14c5eb0 new 0x55d0a14c5eb0
-    ## destructing A, which pointed to 0x55d0a14c5eb0
+    ## constructing A pointing to 0x5638519d7eb0
+    ## move assignment, old 0 other's 0x5638519d7eb0 new 0x5638519d7eb0
+    ## destructing A, which pointed to 0x5638519d7eb0
     ## destructing A, which pointed to 0
 
 ### Task
@@ -338,12 +338,12 @@ int main() {
 }
 ```
 
-    ## constructing A pointing to 0x56124f716ed0
-    ## constructing A pointing to 0x56124f717f20
-    ## destructing A, which pointed to 0x56124f717f20
-    ## constructing A pointing to 0x56124f717f20
-    ## destructing A, which pointed to 0x56124f717f20
-    ## destructing A, which pointed to 0x56124f716ed0
+    ## constructing A pointing to 0x5584bc47ced0
+    ## constructing A pointing to 0x5584bc47df20
+    ## destructing A, which pointed to 0x5584bc47df20
+    ## constructing A pointing to 0x5584bc47df20
+    ## destructing A, which pointed to 0x5584bc47df20
+    ## destructing A, which pointed to 0x5584bc47ced0
 
 We cannot copy a unique pointer, we can only move it. This prevents two
 separate objects owning the object that is pointed to.
@@ -357,7 +357,7 @@ int main() {
 }
 ```
 
-    ## /home/cameron/Documents/NULearning/cpp/.tmp_c/ASulF.cpp:5:24: error: call to deleted constructor of 'std::unique_ptr<A>'
+    ## /home/cameron/Documents/NULearning/cpp/.tmp_c/XruGv.cpp:5:24: error: call to deleted constructor of 'std::unique_ptr<A>'
     ##     std::unique_ptr<A> b = a;
     ##                        ^   ~
     ## /usr/bin/../lib64/gcc/x86_64-pc-linux-gnu/11.1.0/../../../../include/c++/11.1.0/bits/unique_ptr.h:468:7: note: 'unique_ptr' has been explicitly marked deleted here
@@ -375,8 +375,8 @@ int main() {
 }
 ```
 
-    ## constructing A pointing to 0x556926f66ed0
-    ## destructing A, which pointed to 0x556926f66ed0
+    ## constructing A pointing to 0x55a56d3d9ed0
+    ## destructing A, which pointed to 0x55a56d3d9ed0
 
 #### Exception Memory Safety
 
@@ -398,9 +398,9 @@ int main() {
 }
 ```
 
-    ## constructing A pointing to 0x56382ca55ed0
-    ## constructing A pointing to 0x56382ca56f20
-    ## destructing A, which pointed to 0x56382ca56f20
+    ## constructing A pointing to 0x560b0bd40ed0
+    ## constructing A pointing to 0x560b0bd41f20
+    ## destructing A, which pointed to 0x560b0bd41f20
 
 #### Loaning
 
@@ -445,8 +445,8 @@ int main(){
 }
 ```
 
-    ## constructing A pointing to 0x55e95a19ded0
-    ## destructing A, which pointed to 0x55e95a19ded0
+    ## constructing A pointing to 0x55900d187ed0
+    ## destructing A, which pointed to 0x55900d187ed0
 
 ### Weak
 
@@ -487,14 +487,30 @@ int main() {
 }
 ```
 
-    ## Constructor 0x55ec676f7ec0
-    ## Constructor 0x55ec676f8f00
-    ## Constructor 0x55ec676f8f30
-    ## Constructor 0x55ec676f8f60
-    ## Destructor 0x55ec676f8f60
-    ## Destructor 0x55ec676f8f30
+    ## Constructor 0x55cf855daec0
+    ## Constructor 0x55cf855dbf00
+    ## Constructor 0x55cf855dbf30
+    ## Constructor 0x55cf855dbf60
+    ## Destructor 0x55cf855dbf60
+    ## Destructor 0x55cf855dbf30
 
 ### Deleter
+
+For some legacy or c functions, there may be a custom delete function
+for that type.
+
+``` cpp
+#include <memory>
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <netdb.h>
+int main() {
+    addrinfo hints;
+    addrinfo* info;
+    getaddrinfo("127.0.0.1", "80", &hints, &info);
+    auto a = std::unique_ptr<addrinfo, decltype(&freeaddrinfo)>(info, freeaddrinfo);
+}
+```
 
 # Standard Library Features
 
