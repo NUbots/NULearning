@@ -154,6 +154,67 @@ Eigen's docs list using the `auto` keyword for their types as a [common pitfall]
 a. Write a program which uses `auto` to define a string, then use auto to define a custom class or struct type `T`.
 b. Add a range-based for loop to the program, iterating through a `std::vector<T>` of your class type. `std::vector` is a dynamically sized array, which is very similar to Java's `ArrayList`. It's very good and very fast - we use it all the time when we have to use the heap (we stick to using the stack whenever possible though). Use `emplace_back` to construct the `T` instances as you add them to the `std::vector`.
 
+# Initializer Lists & Namespaces
+
+Initializer lists can be used in constructors to initialise values for member variables, even if they're const. Here is an example of the syntax:
+
+```{cpp, eval=FALSE}
+#include "kev/FooLongName.hpp"
+
+namespace bar::baz {
+
+    // This is a type alias. These serve the same function as `typedef` statements,
+    // except they don't declare a new type like `typedef`s do.
+    // These can make things more concise, but we don't use them often, for the sake
+    // of clarity over conciseness
+    using Foo = kev::FooLongName;
+
+    // Adds this name into this namespace. We do use these often, to import function
+    // names, so we don't have huge, long function names within four nested namespaces
+    using kev::FooLongName::getAlternativeConfig;
+
+    class A {
+        const int a = 0; // Can still be given another value by a constructor, by using
+                         // an initializer list
+
+        Foo thing_f{};   // Brace-initialisation - calls the associated constructor in-place
+
+        A() = default;   // Makes the compiler define the default constructor for us
+                         // even though we defined another constructor, which otherwise
+                         // would make the compiler delete the default one
+                        
+        A(const int& a_) : a(a_), thing_f(getAlternativeConfig()) // We can even call functions in
+                                                                  // initializer lists, such as
+                                                                  // this previously `using`'d one
+        {
+            // This code is executed after the initializer list is finished doing things
+        }
+    };
+}
+```
+
+This example makes liberal use of _namespaces_. Namespaces let us separate functions and objects into different spots where their symbols won't conflict. For example, we can have a function in the `bar::baz` namespace called `run()` with the same signature (besides the namespace) as `foo::run()`, or even `bar::run()`.
+
+**Anonymous namespaces** are namespaces which don't have names. These restrict use of the things inside of the namespace to the things inside the same file as the things in the anonymous namespace. Anonymous namespaces [should not be used in headers](https://wiki.sei.cmu.edu/confluence/display/cplusplus/DCL59-CPP.+Do+not+define+an+unnamed+namespace+in+a+header+file#:~:text=Do%20not%20define%20an%20unnamed%20namespace%20in%20a%20header%20file&text=When%20an%20unnamed%20namespace%20is,used%20within%20that%20translation%20unit.). Here is an example using an anonymous namespace:
+
+```{cpp, eval=FALSE}
+#include "foo.hpp"
+
+// Anonymous namespace - keeps these things accessible only within this file
+namespace {
+    return_type helper_function() { 
+        // does things
+    }
+}
+
+baz_type foo::baz() {
+    // We can call `helper_function` in this file, but we can't call it outside of this file.
+    // This keeps it local to this file, without any chance of it being used by anything else.
+    const auto bar = helper_function();
+    return f(bar);
+}
+```
+
 # Object Ownership
 
 The model for resource management, e.g. heap memory, we use is called object ownership. This is where each object has something, usually another object, that is responsible for freeing the resource.
