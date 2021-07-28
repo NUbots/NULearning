@@ -38,7 +38,7 @@ for (const auto& letter : letters) {
 }
 ```
 
-    ## /home/cameron/Documents/NULearning/cpp/.tmp_c/6s1Og.cpp:12:1: error: expected unqualified-id
+    ## /home/cameron/Documents/NULearning/cpp/.tmp_c/D159o.cpp:12:1: error: expected unqualified-id
     ## for (const auto& letter : letters) {
     ## ^
     ## 1 error generated.
@@ -199,8 +199,8 @@ int main() {
 }
 ```
 
-    ## constructing A pointing to 0x559cf3aa5eb0
-    ## destructing A, which pointed to 0x559cf3aa5eb0
+    ## constructing A pointing to 0x5647b2c3ceb0
+    ## destructing A, which pointed to 0x5647b2c3ceb0
 
 ### Copy Constructor
 
@@ -230,10 +230,10 @@ int main(){
 }
 ```
 
-    ## constructing A pointing to 0x557017818eb0
-    ## copy construction, old 0 other's 0x557017818eb0 new 0x557017819ee0
-    ## destructing A, which pointed to 0x557017819ee0
-    ## destructing A, which pointed to 0x557017818eb0
+    ## constructing A pointing to 0x562f826d5eb0
+    ## copy construction, old 0 other's 0x562f826d5eb0 new 0x562f826d6ee0
+    ## destructing A, which pointed to 0x562f826d6ee0
+    ## destructing A, which pointed to 0x562f826d5eb0
 
 ### Copy Assignment
 
@@ -264,11 +264,11 @@ int main() {
 }
 ```
 
-    ## constructing A pointing to 0x5624cc23deb0
-    ## constructing A pointing to 0x5624cc23eee0
-    ## copy assignment, old 0x5624cc23eee0 other's 0x5624cc23deb0 new 0x5624cc23ef00
-    ## destructing A, which pointed to 0x5624cc23ef00
-    ## destructing A, which pointed to 0x5624cc23deb0
+    ## constructing A pointing to 0x55709b79ceb0
+    ## constructing A pointing to 0x55709b79dee0
+    ## copy assignment, old 0x55709b79dee0 other's 0x55709b79ceb0 new 0x55709b79df00
+    ## destructing A, which pointed to 0x55709b79df00
+    ## destructing A, which pointed to 0x55709b79ceb0
 
 ### Move Constructor
 
@@ -299,9 +299,9 @@ int main() {
 }
 ```
 
-    ## constructing A pointing to 0x563fdad63eb0
-    ## move construction, old 0 other's 0x563fdad63eb0 new 0x563fdad63eb0
-    ## destructing A, which pointed to 0x563fdad63eb0
+    ## constructing A pointing to 0x560871c81eb0
+    ## move construction, old 0 other's 0x560871c81eb0 new 0x560871c81eb0
+    ## destructing A, which pointed to 0x560871c81eb0
     ## destructing A, which pointed to 0
 
 ### Move Assignment
@@ -337,9 +337,9 @@ int main() {
 }
 ```
 
-    ## constructing A pointing to 0x561bf780feb0
-    ## move assignment, old 0 other's 0x561bf780feb0 new 0x561bf780feb0
-    ## destructing A, which pointed to 0x561bf780feb0
+    ## constructing A pointing to 0x555f0b286eb0
+    ## move assignment, old 0 other's 0x555f0b286eb0 new 0x555f0b286eb0
+    ## destructing A, which pointed to 0x555f0b286eb0
     ## destructing A, which pointed to 0
 
 ### Task
@@ -418,12 +418,12 @@ int main() {
 }
 ```
 
-    ## constructing A pointing to 0x55ab1cb0fed0
-    ## constructing A pointing to 0x55ab1cb10f20
-    ## destructing A, which pointed to 0x55ab1cb10f20
-    ## constructing A pointing to 0x55ab1cb10f20
-    ## destructing A, which pointed to 0x55ab1cb10f20
-    ## destructing A, which pointed to 0x55ab1cb0fed0
+    ## constructing A pointing to 0x5625d9cb9ed0
+    ## constructing A pointing to 0x5625d9cbaf20
+    ## destructing A, which pointed to 0x5625d9cbaf20
+    ## constructing A pointing to 0x5625d9cbaf20
+    ## destructing A, which pointed to 0x5625d9cbaf20
+    ## destructing A, which pointed to 0x5625d9cb9ed0
 
 We cannot copy a unique pointer, we can only move it. This prevents two
 separate objects owning the object that is pointed to.
@@ -437,7 +437,7 @@ int main() {
 }
 ```
 
-    ## /home/cameron/Documents/NULearning/cpp/.tmp_c/IBkdh.cpp:5:24: error: call to deleted constructor of 'std::unique_ptr<A>'
+    ## /home/cameron/Documents/NULearning/cpp/.tmp_c/swfQP.cpp:5:24: error: call to deleted constructor of 'std::unique_ptr<A>'
     ##     std::unique_ptr<A> b = a;
     ##                        ^   ~
     ## /usr/bin/../lib64/gcc/x86_64-pc-linux-gnu/11.1.0/../../../../include/c++/11.1.0/bits/unique_ptr.h:468:7: note: 'unique_ptr' has been explicitly marked deleted here
@@ -455,8 +455,8 @@ int main() {
 }
 ```
 
-    ## constructing A pointing to 0x555fb8837ed0
-    ## destructing A, which pointed to 0x555fb8837ed0
+    ## constructing A pointing to 0x55c7b9fb6ed0
+    ## destructing A, which pointed to 0x55c7b9fb6ed0
 
 #### Exception Memory Safety
 
@@ -478,9 +478,9 @@ int main() {
 }
 ```
 
-    ## constructing A pointing to 0x55f39be46ed0
-    ## constructing A pointing to 0x55f39be47f20
-    ## destructing A, which pointed to 0x55f39be47f20
+    ## constructing A pointing to 0x555a6c148ed0
+    ## constructing A pointing to 0x555a6c149f20
+    ## destructing A, which pointed to 0x555a6c149f20
 
 #### Loaning
 
@@ -525,8 +525,8 @@ int main(){
 }
 ```
 
-    ## constructing A pointing to 0x5568947dbed0
-    ## destructing A, which pointed to 0x5568947dbed0
+    ## constructing A pointing to 0x55d915247ed0
+    ## destructing A, which pointed to 0x55d915247ed0
 
 ### Weak
 
@@ -568,12 +568,12 @@ int main() {
 }
 ```
 
-    ## Constructor 0x562ed12dfec0
-    ## Constructor 0x562ed12e0f00
-    ## Constructor 0x562ed12e0f30
-    ## Constructor 0x562ed12e0f60
-    ## Destructor 0x562ed12e0f60
-    ## Destructor 0x562ed12e0f30
+    ## Constructor 0x563ab23b4ec0
+    ## Constructor 0x563ab23b5f00
+    ## Constructor 0x563ab23b5f30
+    ## Constructor 0x563ab23b5f60
+    ## Destructor 0x563ab23b5f60
+    ## Destructor 0x563ab23b5f30
 
 ### Deleter
 
@@ -594,5 +594,43 @@ int main() {
 ```
 
 # Standard Library Features
+
+## Array
+
+A `std::array` is similar to a c-style array but you specify the size of
+the array at compile-time. [Reference
+Page](https://en.cppreference.com/w/cpp/container/array).
+
+## Vector
+
+This is an array where we pass the size of the array at run-time, we can
+also resize the vector by adding elements. [Reference
+Page](https://en.cppreference.com/w/cpp/container/vector).
+
+It has both a size and a capacity, size is the number of current
+elements and capacity is the current size of the underlying c array.
+When the size reaches capacity, c++ will allocate more memory and
+increase the capacity. Make sure that you try to reduce the number of
+time that the capacity is changed, one way to do this is to reserve
+space when you plan to add more than one element.
+
+Removing and adding elements near the start of the vector is slow, see
+[Reference Page](https://en.cppreference.com/w/cpp/container/vector) for
+time complexities, use a deque when you plan to do this often.
+
+## Deque
+
+A `std::deque` implements a deque. The expansion of capacity and
+insertion or removal of elements at the ends is much faster than a
+vector, but takes up more memory and access is slower. Usually a vector
+is better as we usually do more reads than insertion and removals.
+
+## Map
+
+This is an associative data structure, it associates values to keys. It
+can either be a red-black tree,
+[std::map](https://en.cppreference.com/w/cpp/container/map), or a hash
+map,
+[std::unordered_map](https://en.cppreference.com/w/cpp/container/unordered_map).
 
 # C++ Feautres

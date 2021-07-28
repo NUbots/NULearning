@@ -561,4 +561,24 @@ int main() {
 
 # Standard Library Features
 
+## Array
+
+A `std::array` is similar to a c-style array but you specify the size of the array at compile-time. [Reference Page](https://en.cppreference.com/w/cpp/container/array).
+
+## Vector
+
+This is an array where we pass the size of the array at run-time, we can also resize the vector by adding elements. [Reference Page](https://en.cppreference.com/w/cpp/container/vector).
+
+It has both a size and a capacity, size is the number of current elements and capacity is the current size of the underlying c array. When the size reaches capacity, c++ will allocate more memory and increase the capacity. Make sure that you try to reduce the number of time that the capacity is changed, one way to do this is to reserve space when you plan to add more than one element.
+
+Removing and adding elements near the start of the vector is slow, see [Reference Page](https://en.cppreference.com/w/cpp/container/vector) for time complexities, use a deque when you plan to do this often.
+
+## Deque
+
+A `std::deque` implements a deque. The expansion of capacity and insertion or removal of elements at the ends is much faster than a vector, but takes up more memory and access is slower. Usually a vector is better as we usually do more reads than insertion and removals.
+
+## Map
+
+This is an associative data structure, it associates values to keys. It can either be a red-black tree, [std::map](https://en.cppreference.com/w/cpp/container/map), or a hash map, [std::unordered_map](https://en.cppreference.com/w/cpp/container/unordered_map).
+
 # C++ Feautres
