@@ -25,23 +25,25 @@ range-based `for` loop, as in the following example:
 #include <iostream>
 #include <array>
 #include <string>
+int main(){
+    std::array<std::string, 5> letters {"a", "b", "c", "d", "e"};
 
-std::array<std::string, 5> letters {"a", "b", "c", "d", "e"};
-
-// Range-based for loops automatically create iterators for containers
-// which support them, such as std::array, and dereference them for us. 
-// You should usually use `const auto&`, `auto&` (or `auto&&`) for these 
-// variables, because they're huge, ugly, std::iterator types which are 
-// hard to read
-for (const auto& letter : letters) {
-    std::cout << letter << std::endl;
+    // Range-based for loops automatically create iterators for containers
+    // which support them, such as std::array, and dereference them for us. 
+    // You should usually use `const auto&`, `auto&` (or `auto&&`) for these 
+    // variables, because they're huge, ugly, std::iterator types which are 
+    // hard to read
+    for (const auto& letter : letters) {
+        std::cout << letter << std::endl;
+    }
 }
 ```
 
-    ## /home/cameron/Documents/NULearning/cpp/.tmp_c/yv4Rr.cpp:12:1: error: expected unqualified-id
-    ## for (const auto& letter : letters) {
-    ## ^
-    ## 1 error generated.
+    ## a
+    ## b
+    ## c
+    ## d
+    ## e
 
 ### DO NOT USE `auto` FOR EIGEN TYPES
 
@@ -199,8 +201,8 @@ int main() {
 }
 ```
 
-    ## constructing A pointing to 0x55b3ac10aeb0
-    ## destructing A, which pointed to 0x55b3ac10aeb0
+    ## constructing A pointing to 0x561224ee4eb0
+    ## destructing A, which pointed to 0x561224ee4eb0
 
 ### Copy Constructor
 
@@ -230,10 +232,10 @@ int main(){
 }
 ```
 
-    ## constructing A pointing to 0x56117e079eb0
-    ## copy construction, old 0 other's 0x56117e079eb0 new 0x56117e07aee0
-    ## destructing A, which pointed to 0x56117e07aee0
-    ## destructing A, which pointed to 0x56117e079eb0
+    ## constructing A pointing to 0x556cdf3abeb0
+    ## copy construction, old 0 other's 0x556cdf3abeb0 new 0x556cdf3acee0
+    ## destructing A, which pointed to 0x556cdf3acee0
+    ## destructing A, which pointed to 0x556cdf3abeb0
 
 ### Copy Assignment
 
@@ -264,11 +266,11 @@ int main() {
 }
 ```
 
-    ## constructing A pointing to 0x557b25349eb0
-    ## constructing A pointing to 0x557b2534aee0
-    ## copy assignment, old 0x557b2534aee0 other's 0x557b25349eb0 new 0x557b2534af00
-    ## destructing A, which pointed to 0x557b2534af00
-    ## destructing A, which pointed to 0x557b25349eb0
+    ## constructing A pointing to 0x55ef97551eb0
+    ## constructing A pointing to 0x55ef97552ee0
+    ## copy assignment, old 0x55ef97552ee0 other's 0x55ef97551eb0 new 0x55ef97552f00
+    ## destructing A, which pointed to 0x55ef97552f00
+    ## destructing A, which pointed to 0x55ef97551eb0
 
 ### Move Constructor
 
@@ -299,9 +301,9 @@ int main() {
 }
 ```
 
-    ## constructing A pointing to 0x55dad5a8feb0
-    ## move construction, old 0 other's 0x55dad5a8feb0 new 0x55dad5a8feb0
-    ## destructing A, which pointed to 0x55dad5a8feb0
+    ## constructing A pointing to 0x55aff14a1eb0
+    ## move construction, old 0 other's 0x55aff14a1eb0 new 0x55aff14a1eb0
+    ## destructing A, which pointed to 0x55aff14a1eb0
     ## destructing A, which pointed to 0
 
 ### Move Assignment
@@ -337,9 +339,9 @@ int main() {
 }
 ```
 
-    ## constructing A pointing to 0x558e6d164eb0
-    ## move assignment, old 0 other's 0x558e6d164eb0 new 0x558e6d164eb0
-    ## destructing A, which pointed to 0x558e6d164eb0
+    ## constructing A pointing to 0x558ace27beb0
+    ## move assignment, old 0 other's 0x558ace27beb0 new 0x558ace27beb0
+    ## destructing A, which pointed to 0x558ace27beb0
     ## destructing A, which pointed to 0
 
 ### Task
@@ -390,7 +392,21 @@ A r-value is a reference that is not bound to a variable. r-values are
 temporary and thus the ownership of the value is yielded to the function
 it is passed to. In the function this is a double ampersand `&&`.
 
-A l-value can be converted to an r-value by using `std::move`.
+A l-value can be converted to an r-value by using `std::move`. r-values
+are returned from functions that return by value.
+
+Move semantics use r-value and copy semantics use l-value.
+
+``` cpp
+#include "A.hpp"
+A cool(){return A(5);}
+int main(){
+    A x = cool();
+}
+```
+
+    ## constructing A pointing to 0x55c51226aeb0
+    ## destructing A, which pointed to 0x55c51226aeb0
 
 ## Smart Pointers
 
@@ -429,12 +445,12 @@ int main() {
 }
 ```
 
-    ## constructing A pointing to 0x555fd66a2ed0
-    ## constructing A pointing to 0x555fd66a3f20
-    ## destructing A, which pointed to 0x555fd66a3f20
-    ## constructing A pointing to 0x555fd66a3f20
-    ## destructing A, which pointed to 0x555fd66a3f20
-    ## destructing A, which pointed to 0x555fd66a2ed0
+    ## constructing A pointing to 0x55c933562ed0
+    ## constructing A pointing to 0x55c933563f20
+    ## destructing A, which pointed to 0x55c933563f20
+    ## constructing A pointing to 0x55c933563f20
+    ## destructing A, which pointed to 0x55c933563f20
+    ## destructing A, which pointed to 0x55c933562ed0
 
 We cannot copy a unique pointer, we can only move it. This prevents two
 separate objects owning the object that is pointed to.
@@ -448,7 +464,7 @@ int main() {
 }
 ```
 
-    ## /home/cameron/Documents/NULearning/cpp/.tmp_c/iDdnk.cpp:5:24: error: call to deleted constructor of 'std::unique_ptr<A>'
+    ## /home/cameron/Documents/NULearning/cpp/.tmp_c/gNm8m.cpp:5:24: error: call to deleted constructor of 'std::unique_ptr<A>'
     ##     std::unique_ptr<A> b = a;
     ##                        ^   ~
     ## /usr/bin/../lib64/gcc/x86_64-pc-linux-gnu/11.1.0/../../../../include/c++/11.1.0/bits/unique_ptr.h:468:7: note: 'unique_ptr' has been explicitly marked deleted here
@@ -466,8 +482,8 @@ int main() {
 }
 ```
 
-    ## constructing A pointing to 0x564567f24ed0
-    ## destructing A, which pointed to 0x564567f24ed0
+    ## constructing A pointing to 0x5570e759ded0
+    ## destructing A, which pointed to 0x5570e759ded0
 
 #### Exception Memory Safety
 
@@ -489,9 +505,9 @@ int main() {
 }
 ```
 
-    ## constructing A pointing to 0x55de57b8fed0
-    ## constructing A pointing to 0x55de57b90f20
-    ## destructing A, which pointed to 0x55de57b90f20
+    ## constructing A pointing to 0x55cec43d0ed0
+    ## constructing A pointing to 0x55cec43d1f20
+    ## destructing A, which pointed to 0x55cec43d1f20
 
 #### Loaning
 
@@ -536,8 +552,8 @@ int main(){
 }
 ```
 
-    ## constructing A pointing to 0x555be1e3fed0
-    ## destructing A, which pointed to 0x555be1e3fed0
+    ## constructing A pointing to 0x557b08c95ed0
+    ## destructing A, which pointed to 0x557b08c95ed0
 
 ### Weak
 
@@ -579,12 +595,12 @@ int main() {
 }
 ```
 
-    ## Constructor 0x557224a73ec0
-    ## Constructor 0x557224a74f00
-    ## Constructor 0x557224a74f30
-    ## Constructor 0x557224a74f60
-    ## Destructor 0x557224a74f60
-    ## Destructor 0x557224a74f30
+    ## Constructor 0x55eb8007bec0
+    ## Constructor 0x55eb8007cf00
+    ## Constructor 0x55eb8007cf30
+    ## Constructor 0x55eb8007cf60
+    ## Destructor 0x55eb8007cf60
+    ## Destructor 0x55eb8007cf30
 
 ### Deleter
 

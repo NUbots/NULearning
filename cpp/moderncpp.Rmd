@@ -132,16 +132,17 @@ Some C++ people think you should "almost always [use] auto", but we don't. Our m
 #include <iostream>
 #include <array>
 #include <string>
+int main(){
+    std::array<std::string, 5> letters {"a", "b", "c", "d", "e"};
 
-std::array<std::string, 5> letters {"a", "b", "c", "d", "e"};
-
-// Range-based for loops automatically create iterators for containers
-// which support them, such as std::array, and dereference them for us. 
-// You should usually use `const auto&`, `auto&` (or `auto&&`) for these 
-// variables, because they're huge, ugly, std::iterator types which are 
-// hard to read
-for (const auto& letter : letters) {
-    std::cout << letter << std::endl;
+    // Range-based for loops automatically create iterators for containers
+    // which support them, such as std::array, and dereference them for us. 
+    // You should usually use `const auto&`, `auto&` (or `auto&&`) for these 
+    // variables, because they're huge, ugly, std::iterator types which are 
+    // hard to read
+    for (const auto& letter : letters) {
+        std::cout << letter << std::endl;
+    }
 }
 ```
 
@@ -414,7 +415,18 @@ A l-value is a reference that references a value bound to a variable. In the fun
 
 A r-value is a reference that is not bound to a variable. r-values are temporary and thus the ownership of the value is yielded to the function it is passed to. In the function this is a double ampersand `&&`.
 
-A l-value can be converted to an r-value by using `std::move`.
+A l-value can be converted to an r-value by using `std::move`. r-values are returned from functions that return by value.
+
+Move semantics use r-value and copy semantics use l-value.
+
+```{cpp}
+#include "A.hpp"
+A cool(){return A(5);}
+int main(){
+    A x = cool();
+}
+```
+
 
 ## Smart Pointers
 
