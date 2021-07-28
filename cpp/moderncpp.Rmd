@@ -133,7 +133,7 @@ Some C++ people think you should "almost always [use] auto", but we don't. Our m
 #include <array>
 #include <string>
 
-std::array<5, std::string> letters {"a", "b", "c", "d", "e"};
+std::array<std::string, 5> letters {"a", "b", "c", "d", "e"};
 
 // Range-based for loops automatically create iterators for containers
 // which support them, such as std::array, and dereference them for us. 
