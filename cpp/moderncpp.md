@@ -38,7 +38,7 @@ for (const auto& letter : letters) {
 }
 ```
 
-    ## /home/cameron/Documents/NULearning/cpp/.tmp_c/Y9Lb0.cpp:12:1: error: expected unqualified-id
+    ## /home/cameron/Documents/NULearning/cpp/.tmp_c/6s1Og.cpp:12:1: error: expected unqualified-id
     ## for (const auto& letter : letters) {
     ## ^
     ## 1 error generated.
@@ -113,6 +113,9 @@ nested namespaces
     };
 } // namespace bar::baz
 ```
+
+(Note that if a member variable or object has no default constructor, it
+must be initialised using an initializer list.)
 
 This example makes liberal use of *namespaces*. Namespaces let us
 separate functions and objects into different spots where their symbols
@@ -196,8 +199,8 @@ int main() {
 }
 ```
 
-    ## constructing A pointing to 0x55e5e7c10eb0
-    ## destructing A, which pointed to 0x55e5e7c10eb0
+    ## constructing A pointing to 0x559cf3aa5eb0
+    ## destructing A, which pointed to 0x559cf3aa5eb0
 
 ### Copy Constructor
 
@@ -227,10 +230,10 @@ int main(){
 }
 ```
 
-    ## constructing A pointing to 0x55839c395eb0
-    ## copy construction, old 0 other's 0x55839c395eb0 new 0x55839c396ee0
-    ## destructing A, which pointed to 0x55839c396ee0
-    ## destructing A, which pointed to 0x55839c395eb0
+    ## constructing A pointing to 0x557017818eb0
+    ## copy construction, old 0 other's 0x557017818eb0 new 0x557017819ee0
+    ## destructing A, which pointed to 0x557017819ee0
+    ## destructing A, which pointed to 0x557017818eb0
 
 ### Copy Assignment
 
@@ -261,11 +264,11 @@ int main() {
 }
 ```
 
-    ## constructing A pointing to 0x55f79e281eb0
-    ## constructing A pointing to 0x55f79e282ee0
-    ## copy assignment, old 0x55f79e282ee0 other's 0x55f79e281eb0 new 0x55f79e282f00
-    ## destructing A, which pointed to 0x55f79e282f00
-    ## destructing A, which pointed to 0x55f79e281eb0
+    ## constructing A pointing to 0x5624cc23deb0
+    ## constructing A pointing to 0x5624cc23eee0
+    ## copy assignment, old 0x5624cc23eee0 other's 0x5624cc23deb0 new 0x5624cc23ef00
+    ## destructing A, which pointed to 0x5624cc23ef00
+    ## destructing A, which pointed to 0x5624cc23deb0
 
 ### Move Constructor
 
@@ -296,9 +299,9 @@ int main() {
 }
 ```
 
-    ## constructing A pointing to 0x55e28a4f5eb0
-    ## move construction, old 0 other's 0x55e28a4f5eb0 new 0x55e28a4f5eb0
-    ## destructing A, which pointed to 0x55e28a4f5eb0
+    ## constructing A pointing to 0x563fdad63eb0
+    ## move construction, old 0 other's 0x563fdad63eb0 new 0x563fdad63eb0
+    ## destructing A, which pointed to 0x563fdad63eb0
     ## destructing A, which pointed to 0
 
 ### Move Assignment
@@ -334,9 +337,9 @@ int main() {
 }
 ```
 
-    ## constructing A pointing to 0x5556a26e4eb0
-    ## move assignment, old 0 other's 0x5556a26e4eb0 new 0x5556a26e4eb0
-    ## destructing A, which pointed to 0x5556a26e4eb0
+    ## constructing A pointing to 0x561bf780feb0
+    ## move assignment, old 0 other's 0x561bf780feb0 new 0x561bf780feb0
+    ## destructing A, which pointed to 0x561bf780feb0
     ## destructing A, which pointed to 0
 
 ### Task
@@ -415,12 +418,12 @@ int main() {
 }
 ```
 
-    ## constructing A pointing to 0x55a25caf9ed0
-    ## constructing A pointing to 0x55a25cafaf20
-    ## destructing A, which pointed to 0x55a25cafaf20
-    ## constructing A pointing to 0x55a25cafaf20
-    ## destructing A, which pointed to 0x55a25cafaf20
-    ## destructing A, which pointed to 0x55a25caf9ed0
+    ## constructing A pointing to 0x55ab1cb0fed0
+    ## constructing A pointing to 0x55ab1cb10f20
+    ## destructing A, which pointed to 0x55ab1cb10f20
+    ## constructing A pointing to 0x55ab1cb10f20
+    ## destructing A, which pointed to 0x55ab1cb10f20
+    ## destructing A, which pointed to 0x55ab1cb0fed0
 
 We cannot copy a unique pointer, we can only move it. This prevents two
 separate objects owning the object that is pointed to.
@@ -434,7 +437,7 @@ int main() {
 }
 ```
 
-    ## /home/cameron/Documents/NULearning/cpp/.tmp_c/lYob4.cpp:5:24: error: call to deleted constructor of 'std::unique_ptr<A>'
+    ## /home/cameron/Documents/NULearning/cpp/.tmp_c/IBkdh.cpp:5:24: error: call to deleted constructor of 'std::unique_ptr<A>'
     ##     std::unique_ptr<A> b = a;
     ##                        ^   ~
     ## /usr/bin/../lib64/gcc/x86_64-pc-linux-gnu/11.1.0/../../../../include/c++/11.1.0/bits/unique_ptr.h:468:7: note: 'unique_ptr' has been explicitly marked deleted here
@@ -452,8 +455,8 @@ int main() {
 }
 ```
 
-    ## constructing A pointing to 0x5608d8f82ed0
-    ## destructing A, which pointed to 0x5608d8f82ed0
+    ## constructing A pointing to 0x555fb8837ed0
+    ## destructing A, which pointed to 0x555fb8837ed0
 
 #### Exception Memory Safety
 
@@ -475,9 +478,9 @@ int main() {
 }
 ```
 
-    ## constructing A pointing to 0x55ab43c45ed0
-    ## constructing A pointing to 0x55ab43c46f20
-    ## destructing A, which pointed to 0x55ab43c46f20
+    ## constructing A pointing to 0x55f39be46ed0
+    ## constructing A pointing to 0x55f39be47f20
+    ## destructing A, which pointed to 0x55f39be47f20
 
 #### Loaning
 
@@ -522,8 +525,8 @@ int main(){
 }
 ```
 
-    ## constructing A pointing to 0x55ce42d67ed0
-    ## destructing A, which pointed to 0x55ce42d67ed0
+    ## constructing A pointing to 0x5568947dbed0
+    ## destructing A, which pointed to 0x5568947dbed0
 
 ### Weak
 
@@ -565,12 +568,12 @@ int main() {
 }
 ```
 
-    ## Constructor 0x556a5eee1ec0
-    ## Constructor 0x556a5eee2f00
-    ## Constructor 0x556a5eee2f30
-    ## Constructor 0x556a5eee2f60
-    ## Destructor 0x556a5eee2f60
-    ## Destructor 0x556a5eee2f30
+    ## Constructor 0x562ed12dfec0
+    ## Constructor 0x562ed12e0f00
+    ## Constructor 0x562ed12e0f30
+    ## Constructor 0x562ed12e0f60
+    ## Destructor 0x562ed12e0f60
+    ## Destructor 0x562ed12e0f30
 
 ### Deleter
 
