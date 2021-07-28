@@ -199,6 +199,8 @@ Adds this name into this namespace. We do use these often, to import function na
 } // namespace bar::baz
 ```
 
+(Note that if a member variable or object has no default constructor, it must be initialised using an initializer list.)
+
 This example makes liberal use of _namespaces_. Namespaces let us separate functions and objects into different spots where their symbols won't conflict. For example, we can have a function in the `bar::baz` namespace called `run()` with the same signature (besides the namespace) as `foo::run()`, or even `bar::run()`.
 
 **Anonymous namespaces** are namespaces which don't have names. These restrict use of the things inside of the namespace to the things inside the same file as the things in the anonymous namespace. Anonymous namespaces [should not be used in headers](https://wiki.sei.cmu.edu/confluence/display/cplusplus/DCL59-CPP.+Do+not+define+an+unnamed+namespace+in+a+header+file#:~:text=Do%20not%20define%20an%20unnamed%20namespace%20in%20a%20header%20file&text=When%20an%20unnamed%20namespace%20is,used%20within%20that%20translation%20unit.). Here is an example using an anonymous namespace:
