@@ -111,6 +111,11 @@ struct A{
     }
 };
 ```
+
+# Const
+
+East vs West
+
 # Auto Keyword
 
 The compiler infers the type at compile time.
@@ -603,4 +608,3 @@ A `std::deque` implements a deque. The expansion of capacity and insertion or re
 
 This is an associative data structure, it associates values to keys. It can either be a red-black tree, [std::map](https://en.cppreference.com/w/cpp/container/map), or a hash map, [std::unordered_map](https://en.cppreference.com/w/cpp/container/unordered_map).
 
-# C++ Feautres
