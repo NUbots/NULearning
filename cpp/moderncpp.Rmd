@@ -124,9 +124,35 @@ int main() {
 }
 ```
 
-### Task 1.
+The `auto` keyword can also be used to define references and "raw" pointers, using `auto&` and `auto*`. The `const` keyword also applies as you would expect to `auto` declarations.
 
-Write a program which uses `auto` to define a string, then use auto to define a class or struct type.
+Some C++ people think you should "almost always [use] auto", but we don't. Our most common use of `auto` is for the iterator's object in a range-based `for` loop, as in the following example:
+
+```{cpp}
+#include <iostream>
+#include <array>
+#include <string>
+
+std::array<5, std::string> letters {"a", "b", "c", "d", "e"};
+
+// Range-based for loops automatically create iterators for containers
+// which support them, such as std::array, and dereference them for us. 
+// You should usually use `const auto&`, `auto&` (or `auto&&`) for these 
+// variables, because they're huge, ugly, std::iterator types which are 
+// hard to read
+for (const auto& letter : letters) {
+    std::cout << letter << std::endl;
+}
+```
+
+### DO NOT USE `auto` FOR EIGEN TYPES
+
+Eigen's docs list using the `auto` keyword for their types as a [common pitfall](https://eigen.tuxfamily.org/dox/TopicPitfalls.html). This is mostly because Eigen uses intermediate types all the time with many implicit conversions, which are not at all obvious to the reader.
+
+### Task
+
+a. Write a program which uses `auto` to define a string, then use auto to define a custom class or struct type `T`.
+b. Add a range-based for loop to the program, iterating through a `std::vector<T>` of your class type. `std::vector` is a dynamically sized array, which is very similar to Java's `ArrayList`. It's very good and very fast - we use it all the time when we have to use the heap (we stick to using the stack whenever possible though). Use `emplace_back` to construct the `T` instances as you add them to the `std::vector`.
 
 # Object Ownership
 
@@ -282,7 +308,7 @@ int main() {
 }
 ```
 
-### Task 2.
+### Task
 
 Create a struct which has the following:
 
