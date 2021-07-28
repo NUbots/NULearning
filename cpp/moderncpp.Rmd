@@ -408,6 +408,14 @@ A& operator=(A& other) = delete;
 A& operator=(A&& other) = delete;
 ```
 
+## r and l values
+
+A l-value is a reference that references a value bound to a variable. In the function this is a single ampersand `&`.
+
+A r-value is a reference that is not bound to a variable. r-values are temporary and thus the ownership of the value is yielded to the function it is passed to. In the function this is a double ampersand `&&`.
+
+A l-value can be converted to an r-value by using `std::move`.
+
 ## Smart Pointers
 
 To manage memory and ownership we use smart pointers. Smart pointers handle deletion of our objects for us with some caveats. A smart pointer owns the object that it points to.

@@ -38,7 +38,7 @@ for (const auto& letter : letters) {
 }
 ```
 
-    ## /home/cameron/Documents/NULearning/cpp/.tmp_c/D159o.cpp:12:1: error: expected unqualified-id
+    ## /home/cameron/Documents/NULearning/cpp/.tmp_c/yv4Rr.cpp:12:1: error: expected unqualified-id
     ## for (const auto& letter : letters) {
     ## ^
     ## 1 error generated.
@@ -199,8 +199,8 @@ int main() {
 }
 ```
 
-    ## constructing A pointing to 0x5647b2c3ceb0
-    ## destructing A, which pointed to 0x5647b2c3ceb0
+    ## constructing A pointing to 0x55b3ac10aeb0
+    ## destructing A, which pointed to 0x55b3ac10aeb0
 
 ### Copy Constructor
 
@@ -230,10 +230,10 @@ int main(){
 }
 ```
 
-    ## constructing A pointing to 0x562f826d5eb0
-    ## copy construction, old 0 other's 0x562f826d5eb0 new 0x562f826d6ee0
-    ## destructing A, which pointed to 0x562f826d6ee0
-    ## destructing A, which pointed to 0x562f826d5eb0
+    ## constructing A pointing to 0x56117e079eb0
+    ## copy construction, old 0 other's 0x56117e079eb0 new 0x56117e07aee0
+    ## destructing A, which pointed to 0x56117e07aee0
+    ## destructing A, which pointed to 0x56117e079eb0
 
 ### Copy Assignment
 
@@ -264,11 +264,11 @@ int main() {
 }
 ```
 
-    ## constructing A pointing to 0x55709b79ceb0
-    ## constructing A pointing to 0x55709b79dee0
-    ## copy assignment, old 0x55709b79dee0 other's 0x55709b79ceb0 new 0x55709b79df00
-    ## destructing A, which pointed to 0x55709b79df00
-    ## destructing A, which pointed to 0x55709b79ceb0
+    ## constructing A pointing to 0x557b25349eb0
+    ## constructing A pointing to 0x557b2534aee0
+    ## copy assignment, old 0x557b2534aee0 other's 0x557b25349eb0 new 0x557b2534af00
+    ## destructing A, which pointed to 0x557b2534af00
+    ## destructing A, which pointed to 0x557b25349eb0
 
 ### Move Constructor
 
@@ -299,9 +299,9 @@ int main() {
 }
 ```
 
-    ## constructing A pointing to 0x560871c81eb0
-    ## move construction, old 0 other's 0x560871c81eb0 new 0x560871c81eb0
-    ## destructing A, which pointed to 0x560871c81eb0
+    ## constructing A pointing to 0x55dad5a8feb0
+    ## move construction, old 0 other's 0x55dad5a8feb0 new 0x55dad5a8feb0
+    ## destructing A, which pointed to 0x55dad5a8feb0
     ## destructing A, which pointed to 0
 
 ### Move Assignment
@@ -337,9 +337,9 @@ int main() {
 }
 ```
 
-    ## constructing A pointing to 0x555f0b286eb0
-    ## move assignment, old 0 other's 0x555f0b286eb0 new 0x555f0b286eb0
-    ## destructing A, which pointed to 0x555f0b286eb0
+    ## constructing A pointing to 0x558e6d164eb0
+    ## move assignment, old 0 other's 0x558e6d164eb0 new 0x558e6d164eb0
+    ## destructing A, which pointed to 0x558e6d164eb0
     ## destructing A, which pointed to 0
 
 ### Task
@@ -381,6 +381,17 @@ A& operator=(A& other) = delete;
 A& operator=(A&& other) = delete;
 ```
 
+## r and l values
+
+A l-value is a reference that references a value bound to a variable. In
+the function this is a single ampersand `&`.
+
+A r-value is a reference that is not bound to a variable. r-values are
+temporary and thus the ownership of the value is yielded to the function
+it is passed to. In the function this is a double ampersand `&&`.
+
+A l-value can be converted to an r-value by using `std::move`.
+
 ## Smart Pointers
 
 To manage memory and ownership we use smart pointers. Smart pointers
@@ -418,12 +429,12 @@ int main() {
 }
 ```
 
-    ## constructing A pointing to 0x5625d9cb9ed0
-    ## constructing A pointing to 0x5625d9cbaf20
-    ## destructing A, which pointed to 0x5625d9cbaf20
-    ## constructing A pointing to 0x5625d9cbaf20
-    ## destructing A, which pointed to 0x5625d9cbaf20
-    ## destructing A, which pointed to 0x5625d9cb9ed0
+    ## constructing A pointing to 0x555fd66a2ed0
+    ## constructing A pointing to 0x555fd66a3f20
+    ## destructing A, which pointed to 0x555fd66a3f20
+    ## constructing A pointing to 0x555fd66a3f20
+    ## destructing A, which pointed to 0x555fd66a3f20
+    ## destructing A, which pointed to 0x555fd66a2ed0
 
 We cannot copy a unique pointer, we can only move it. This prevents two
 separate objects owning the object that is pointed to.
@@ -437,7 +448,7 @@ int main() {
 }
 ```
 
-    ## /home/cameron/Documents/NULearning/cpp/.tmp_c/swfQP.cpp:5:24: error: call to deleted constructor of 'std::unique_ptr<A>'
+    ## /home/cameron/Documents/NULearning/cpp/.tmp_c/iDdnk.cpp:5:24: error: call to deleted constructor of 'std::unique_ptr<A>'
     ##     std::unique_ptr<A> b = a;
     ##                        ^   ~
     ## /usr/bin/../lib64/gcc/x86_64-pc-linux-gnu/11.1.0/../../../../include/c++/11.1.0/bits/unique_ptr.h:468:7: note: 'unique_ptr' has been explicitly marked deleted here
@@ -455,8 +466,8 @@ int main() {
 }
 ```
 
-    ## constructing A pointing to 0x55c7b9fb6ed0
-    ## destructing A, which pointed to 0x55c7b9fb6ed0
+    ## constructing A pointing to 0x564567f24ed0
+    ## destructing A, which pointed to 0x564567f24ed0
 
 #### Exception Memory Safety
 
@@ -478,9 +489,9 @@ int main() {
 }
 ```
 
-    ## constructing A pointing to 0x555a6c148ed0
-    ## constructing A pointing to 0x555a6c149f20
-    ## destructing A, which pointed to 0x555a6c149f20
+    ## constructing A pointing to 0x55de57b8fed0
+    ## constructing A pointing to 0x55de57b90f20
+    ## destructing A, which pointed to 0x55de57b90f20
 
 #### Loaning
 
@@ -525,8 +536,8 @@ int main(){
 }
 ```
 
-    ## constructing A pointing to 0x55d915247ed0
-    ## destructing A, which pointed to 0x55d915247ed0
+    ## constructing A pointing to 0x555be1e3fed0
+    ## destructing A, which pointed to 0x555be1e3fed0
 
 ### Weak
 
@@ -568,12 +579,12 @@ int main() {
 }
 ```
 
-    ## Constructor 0x563ab23b4ec0
-    ## Constructor 0x563ab23b5f00
-    ## Constructor 0x563ab23b5f30
-    ## Constructor 0x563ab23b5f60
-    ## Destructor 0x563ab23b5f60
-    ## Destructor 0x563ab23b5f30
+    ## Constructor 0x557224a73ec0
+    ## Constructor 0x557224a74f00
+    ## Constructor 0x557224a74f30
+    ## Constructor 0x557224a74f60
+    ## Destructor 0x557224a74f60
+    ## Destructor 0x557224a74f30
 
 ### Deleter
 
