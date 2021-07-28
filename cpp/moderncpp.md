@@ -38,13 +38,13 @@ for (const auto& letter : letters) {
 }
 ```
 
-    ## /home/cameron/Documents/NULearning/cpp/.tmp_c/4N1L7.cpp:5:12: error: template argument for template type parameter must be a type
+    ## /home/cameron/Documents/NULearning/cpp/.tmp_c/jG0Tk.cpp:5:12: error: template argument for template type parameter must be a type
     ## std::array<5, std::string> letters {"a", "b", "c", "d", "e"};
     ##            ^
     ## /usr/bin/../lib64/gcc/x86_64-pc-linux-gnu/11.1.0/../../../../include/c++/11.1.0/array:94:21: note: template parameter is declared here
     ##   template<typename _Tp, std::size_t _Nm>
     ##                     ^
-    ## /home/cameron/Documents/NULearning/cpp/.tmp_c/4N1L7.cpp:12:1: error: expected unqualified-id
+    ## /home/cameron/Documents/NULearning/cpp/.tmp_c/jG0Tk.cpp:12:1: error: expected unqualified-id
     ## for (const auto& letter : letters) {
     ## ^
     ## 2 errors generated.
@@ -67,6 +67,85 @@ implicit conversions, which are not at all obvious to the reader.
     heap (we stick to using the stack whenever possible though). Use
     `emplace_back` to construct the `T` instances as you add them to the
     `std::vector`.
+
+# Initializer Lists & Namespaces
+
+Initializer lists can be used in constructors to initialise values for
+member variables, even if they’re const. Here is an example of the
+syntax:
+
+``` cpp
+#include "kev/FooLongName.hpp"
+
+namespace bar::baz {
+```
+
+This scope defines a namespace `baz` inside of the namespace `bar`.
+
+``` cpp
+    using Foo = kev::FooLongName;
+```
+
+This is a type alias. These serve the same function as `typedef`
+statements, except they don’t declare a new type like `typedef`s do.
+These can make things more concise, but we don’t use them often, for the
+sake of clarity over conciseness.
+
+``` cpp
+    // Adds this name into this namespace. We do use these often, to import function
+    // names, so we don't have huge, long function names within four nested namespaces
+    using kev::FooLongName::getAlternativeConfig;
+
+    class A {
+        const int a = 0; // Can still be given another value by a constructor, by using
+                         // an initializer list
+
+        Foo thing_f{};   // Brace-initialisation - calls the associated constructor in-place
+
+        A() = default;   // Makes the compiler define the default constructor for us
+                         // even though we defined another constructor, which otherwise
+                         // would make the compiler delete the default one
+                        
+        A(const int& a_) : a(a_), thing_f(getAlternativeConfig()) // We can even call functions in
+                                                                  // initializer lists, such as
+                                                                  // this previously `using`'d one
+        {
+            // This code is executed after the initializer list is finished doing things
+        }
+    };
+}
+```
+
+This example makes liberal use of *namespaces*. Namespaces let us
+separate functions and objects into different spots where their symbols
+won’t conflict. For example, we can have a function in the `bar::baz`
+namespace called `run()` with the same signature (besides the namespace)
+as `foo::run()`, or even `bar::run()`.
+
+**Anonymous namespaces** are namespaces which don’t have names. These
+restrict use of the things inside of the namespace to the things inside
+the same file as the things in the anonymous namespace. Anonymous
+namespaces [should not be used in
+headers](https://wiki.sei.cmu.edu/confluence/display/cplusplus/DCL59-CPP.+Do+not+define+an+unnamed+namespace+in+a+header+file#:~:text=Do%20not%20define%20an%20unnamed%20namespace%20in%20a%20header%20file&text=When%20an%20unnamed%20namespace%20is,used%20within%20that%20translation%20unit.).
+Here is an example using an anonymous namespace:
+
+``` cpp
+#include "foo.hpp"
+
+// Anonymous namespace - keeps these things accessible only within this file
+namespace {
+    return_type helper_function() { 
+        // does things
+    }
+}
+
+baz_type foo::baz() {
+    // We can call `helper_function` in this file, but we can't call it outside of this file.
+    // This keeps it local to this file, without any chance of it being used by anything else.
+    const auto bar = helper_function();
+    return f(bar);
+}
+```
 
 # Object Ownership
 
@@ -119,8 +198,8 @@ int main() {
 }
 ```
 
-    ## constructing A pointing to 0x562e8fedeeb0
-    ## destructing A, which pointed to 0x562e8fedeeb0
+    ## constructing A pointing to 0x55c4eb97ceb0
+    ## destructing A, which pointed to 0x55c4eb97ceb0
 
 ### Copy Constructor
 
@@ -150,10 +229,10 @@ int main(){
 }
 ```
 
-    ## constructing A pointing to 0x55892ee6beb0
-    ## copy construction, old 0 other's 0x55892ee6beb0 new 0x55892ee6cee0
-    ## destructing A, which pointed to 0x55892ee6cee0
-    ## destructing A, which pointed to 0x55892ee6beb0
+    ## constructing A pointing to 0x556a5951feb0
+    ## copy construction, old 0 other's 0x556a5951feb0 new 0x556a59520ee0
+    ## destructing A, which pointed to 0x556a59520ee0
+    ## destructing A, which pointed to 0x556a5951feb0
 
 ### Copy Assignment
 
@@ -184,11 +263,11 @@ int main() {
 }
 ```
 
-    ## constructing A pointing to 0x56518db43eb0
-    ## constructing A pointing to 0x56518db44ee0
-    ## copy assignment, old 0x56518db44ee0 other's 0x56518db43eb0 new 0x56518db44f00
-    ## destructing A, which pointed to 0x56518db44f00
-    ## destructing A, which pointed to 0x56518db43eb0
+    ## constructing A pointing to 0x561236639eb0
+    ## constructing A pointing to 0x56123663aee0
+    ## copy assignment, old 0x56123663aee0 other's 0x561236639eb0 new 0x56123663af00
+    ## destructing A, which pointed to 0x56123663af00
+    ## destructing A, which pointed to 0x561236639eb0
 
 ### Move Constructor
 
@@ -219,9 +298,9 @@ int main() {
 }
 ```
 
-    ## constructing A pointing to 0x55a021a96eb0
-    ## move construction, old 0 other's 0x55a021a96eb0 new 0x55a021a96eb0
-    ## destructing A, which pointed to 0x55a021a96eb0
+    ## constructing A pointing to 0x56193504feb0
+    ## move construction, old 0 other's 0x56193504feb0 new 0x56193504feb0
+    ## destructing A, which pointed to 0x56193504feb0
     ## destructing A, which pointed to 0
 
 ### Move Assignment
@@ -257,9 +336,9 @@ int main() {
 }
 ```
 
-    ## constructing A pointing to 0x55d0a14c5eb0
-    ## move assignment, old 0 other's 0x55d0a14c5eb0 new 0x55d0a14c5eb0
-    ## destructing A, which pointed to 0x55d0a14c5eb0
+    ## constructing A pointing to 0x55a66207eeb0
+    ## move assignment, old 0 other's 0x55a66207eeb0 new 0x55a66207eeb0
+    ## destructing A, which pointed to 0x55a66207eeb0
     ## destructing A, which pointed to 0
 
 ### Task
@@ -338,12 +417,12 @@ int main() {
 }
 ```
 
-    ## constructing A pointing to 0x56124f716ed0
-    ## constructing A pointing to 0x56124f717f20
-    ## destructing A, which pointed to 0x56124f717f20
-    ## constructing A pointing to 0x56124f717f20
-    ## destructing A, which pointed to 0x56124f717f20
-    ## destructing A, which pointed to 0x56124f716ed0
+    ## constructing A pointing to 0x56529c8a3ed0
+    ## constructing A pointing to 0x56529c8a4f20
+    ## destructing A, which pointed to 0x56529c8a4f20
+    ## constructing A pointing to 0x56529c8a4f20
+    ## destructing A, which pointed to 0x56529c8a4f20
+    ## destructing A, which pointed to 0x56529c8a3ed0
 
 We cannot copy a unique pointer, we can only move it. This prevents two
 separate objects owning the object that is pointed to.
@@ -357,7 +436,7 @@ int main() {
 }
 ```
 
-    ## /home/cameron/Documents/NULearning/cpp/.tmp_c/ASulF.cpp:5:24: error: call to deleted constructor of 'std::unique_ptr<A>'
+    ## /home/cameron/Documents/NULearning/cpp/.tmp_c/Kxu74.cpp:5:24: error: call to deleted constructor of 'std::unique_ptr<A>'
     ##     std::unique_ptr<A> b = a;
     ##                        ^   ~
     ## /usr/bin/../lib64/gcc/x86_64-pc-linux-gnu/11.1.0/../../../../include/c++/11.1.0/bits/unique_ptr.h:468:7: note: 'unique_ptr' has been explicitly marked deleted here
@@ -375,8 +454,8 @@ int main() {
 }
 ```
 
-    ## constructing A pointing to 0x556926f66ed0
-    ## destructing A, which pointed to 0x556926f66ed0
+    ## constructing A pointing to 0x5594263fced0
+    ## destructing A, which pointed to 0x5594263fced0
 
 #### Exception Memory Safety
 
@@ -398,9 +477,9 @@ int main() {
 }
 ```
 
-    ## constructing A pointing to 0x56382ca55ed0
-    ## constructing A pointing to 0x56382ca56f20
-    ## destructing A, which pointed to 0x56382ca56f20
+    ## constructing A pointing to 0x55e0ebe23ed0
+    ## constructing A pointing to 0x55e0ebe24f20
+    ## destructing A, which pointed to 0x55e0ebe24f20
 
 #### Loaning
 
@@ -445,8 +524,8 @@ int main(){
 }
 ```
 
-    ## constructing A pointing to 0x55e95a19ded0
-    ## destructing A, which pointed to 0x55e95a19ded0
+    ## constructing A pointing to 0x55edce5bbed0
+    ## destructing A, which pointed to 0x55edce5bbed0
 
 ### Weak
 
@@ -487,12 +566,12 @@ int main() {
 }
 ```
 
-    ## Constructor 0x55ec676f7ec0
-    ## Constructor 0x55ec676f8f00
-    ## Constructor 0x55ec676f8f30
-    ## Constructor 0x55ec676f8f60
-    ## Destructor 0x55ec676f8f60
-    ## Destructor 0x55ec676f8f30
+    ## Constructor 0x559c91e10ec0
+    ## Constructor 0x559c91e11f00
+    ## Constructor 0x559c91e11f30
+    ## Constructor 0x559c91e11f60
+    ## Destructor 0x559c91e11f60
+    ## Destructor 0x559c91e11f30
 
 ### Deleter
 
