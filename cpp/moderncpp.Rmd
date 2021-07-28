@@ -38,7 +38,7 @@ knitr::knit_engines$set(cpp = function(options){
     exec_output = ""
     
     if (options$eval && file_ext(source_path) != "hpp"){
-        executable_path = gsub(file_ext(source_path), "out", source_path)
+        executable_path = file_path_sans_ext(source_path)
         # TODO custom compiler
         compile_output = system2("clang++", c("-Wall", "-g", "-o", executable_path, source_path), stdout=TRUE, stderr=TRUE)
         # Check for successful compile
@@ -341,18 +341,22 @@ A& operator=(A&& other) = delete;
 
 ## Smart Pointers
 
-To manage memory and ownership we use smart pointers. Smart pointers handle deletion of our objects for us with some caveats. You should use smart pointers over "raw" pointers whenever possible, which is when you have ownership of the memory, which is _almost_ always. The one common counterexample we run into is pointers to objects the webots API provides us. We can't call delete on these, because webots is in charge of managing them, so should not use smart pointers with them.
+To manage memory and ownership we use smart pointers. Smart pointers handle deletion of our objects for us with some caveats. A smart pointer owns the object that it points to.
+
+### Raw Pointers
+
+A raw pointer is a pointer with no wrapping object, this is exactly what you would have used in **SENG1120**. You should use smart pointers over raw pointers whenever possible, which is when you have ownership of the memory, which is _almost_ always. The one common counterexample we run into is pointers to objects the webots API provides us. We can't call delete on these, because webots is in charge of managing them, so should not use smart pointers with them.
 
 ### Unique
 
-A unique pointer will manage an object on the heap, deleting it when the pointer goes out of scope.
+A unique pointer is a smart pointer that will manage an object on the heap, deleting it when the pointer goes out of scope.
 
 Always use `std::make_unique` as this solves some problems. Never use `new`.
 
 ```{cpp}
 #include <memory>
 #include "A.hpp"
-int main(){
+int main() {
     std::unique_ptr<A> a = std::make_unique<A>(5);
     {
     // Make a scope so we can see this object get deleted before the one below gets constructed.
@@ -366,7 +370,7 @@ We cannot copy a unique pointer, we can only move it. This prevents two separate
 ```{cpp}
 #include <memory>
 #include "A.hpp"
-int main(){
+int main() {
     std::unique_ptr<A> a = std::make_unique<A>(5);
     std::unique_ptr<A> b = a;
 }
@@ -375,15 +379,101 @@ int main(){
 #include <memory>
 #include <utility>
 #include "A.hpp"
-int main(){
+int main() {
     std::unique_ptr<A> a = std::make_unique<A>(5);
     std::unique_ptr<A> b = std::move(a);
 }
 ```
 
+#### Exception Memory Safety
+
+Smart pointers are safer when dealing with exceptions. Here the smart pointer is deleted whilst the raw pointer is leaked.
+
+```{cpp}
+#include <memory>
+#include "A.hpp"
+int main() {
+    try {
+        auto* a = new A(1);
+        auto b = std::make_unique<A>(1);
+        // if (error occurs) {
+            throw std::runtime_error("Oh no!");
+        // }
+        delete a;
+    } catch (...) {}
+}
+```
+
+#### Loaning
+
+If another object needs to temporally have access to an object, you pass a reference to the pointed to object as a parameter. The object that gains temporary access and should assume that the object is freed after the function has returned.
+
+Webots uses raw pointers to loan objects to us, this is why we do not use smart pointers with webots code.
+
+```{cpp}
+#include <memory>
+#include <iostream>
+void borrow_function(const int& x) {
+    std::cout << x << std::endl;
+}
+int main() {
+    auto a = std::make_unique<int>();
+    borrow_function(*a);
+}
+```
+
 ### Shared
 
+A shared pointer allows for multiple objects to have access to the pointer. This is done by keeping a count of the number of shared pointers that point to an object with the object. When this count reaches zero both the counter and the object are deleted.
+
+Use of shared ownership is rare and always prefer unique pointers where you can.
+
+```{cpp}
+#include <memory>
+#include "A.hpp"
+int main(){
+    auto a = std::make_shared<A>(1);
+    auto b = a;
+}
+```
+
 ### Weak
+
+A weak pointer points to an object that is pointed to by a shared pointer, but does not count towards the total count. When accessing the object pointed to the weak pointer is temporarily upgraded to a shared pointer.
+
+```{cpp}
+#include <memory>
+#include <iostream>
+struct node_bad {
+    std::shared_ptr<node_bad> other;
+    node_bad(const std::shared_ptr<node_bad>& _other = std::shared_ptr<node_bad>()) : other(_other) {
+        std::cout << "Constructor " << this << std::endl;
+    }
+    ~node_bad() {
+        std::cout << "Destructor " << this  << std::endl;
+    }
+};
+struct node_good {
+    std::weak_ptr<node_good> other;
+    node_good(const std::weak_ptr<node_good>& _other = std::weak_ptr<node_good>()) : other(_other) {
+        std::cout << "Constructor " << this << std::endl;
+    }
+    ~node_good() {
+        std::cout << "Destructor " << this  << std::endl;
+    }
+};
+int main() {
+    auto a = std::make_shared<node_bad>();
+    auto b = std::make_shared<node_bad>(a);
+    a->other = b;
+
+    auto c = std::make_shared<node_good>();
+    auto d = std::make_shared<node_good>(c);
+    c->other = d;
+}
+```
+
+### Deleter
 
 # Standard Library Features
 
