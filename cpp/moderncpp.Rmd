@@ -162,12 +162,17 @@ Initializer lists can be used in constructors to initialise values for member va
 #include "kev/FooLongName.hpp"
 
 namespace bar::baz {
+```
 
-    // This is a type alias. These serve the same function as `typedef` statements,
-    // except they don't declare a new type like `typedef`s do.
-    // These can make things more concise, but we don't use them often, for the sake
-    // of clarity over conciseness
+This scope defines a namespace `baz` inside of the namespace `bar`.
+
+```{cpp, eval=FALSE}
     using Foo = kev::FooLongName;
+```
+
+This is a type alias. These serve the same function as `typedef` statements, except they don't declare a new type like `typedef`s do. These can make things more concise, but we don't use them often, for the sake of clarity over conciseness.
+
+```{cpp, eval=FALSE}
 
     // Adds this name into this namespace. We do use these often, to import function
     // names, so we don't have huge, long function names within four nested namespaces
