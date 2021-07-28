@@ -38,7 +38,7 @@ knitr::knit_engines$set(cpp = function(options){
     exec_output = ""
     
     if (options$eval && file_ext(source_path) != "hpp"){
-        executable_path = gsub(file_ext(source_path), "out", source_path)
+        executable_path = file_path_sans_ext(source_path)
         # TODO custom compiler
         compile_output = system2("clang++", c("-Wall", "-g", "-o", executable_path, source_path), stdout=TRUE, stderr=TRUE)
         # Check for successful compile

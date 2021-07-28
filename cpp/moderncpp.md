@@ -11,8 +11,7 @@ int main(){
 }
 ```
 
-    ## /usr/bin/ld: cannot open output file /home/cameron/Documents/NULearning/out/.tmp_c/vxwPq.out: No such file or directory
-    ## clang-12: error: linker command failed with exit code 1 (use -v to see invocation)
+    ## 5 5
 
 # Object Ownership
 
@@ -64,8 +63,8 @@ int main(){
 }
 ```
 
-    ## /usr/bin/ld: cannot open output file /home/cameron/Documents/NULearning/out/.tmp_c/on6MR.out: No such file or directory
-    ## clang-12: error: linker command failed with exit code 1 (use -v to see invocation)
+    ## constructing A pointing to 0x55c5caf86eb0
+    ## destructing A, which pointed to 0x55c5caf86eb0
 
 ### Copy Constructor
 
@@ -95,8 +94,10 @@ int main(){
 }
 ```
 
-    ## /usr/bin/ld: cannot open output file /home/cameron/Documents/NULearning/out/.tmp_c/rwxFe.out: No such file or directory
-    ## clang-12: error: linker command failed with exit code 1 (use -v to see invocation)
+    ## constructing A pointing to 0x561322cc1eb0
+    ## copy construction, old 0 other's 0x561322cc1eb0 new 0x561322cc2ee0
+    ## destructing A, which pointed to 0x561322cc2ee0
+    ## destructing A, which pointed to 0x561322cc1eb0
 
 ### Copy Assignment
 
@@ -127,8 +128,11 @@ int main(){
 }
 ```
 
-    ## /usr/bin/ld: cannot open output file /home/cameron/Documents/NULearning/out/.tmp_c/Bi9SV.out: No such file or directory
-    ## clang-12: error: linker command failed with exit code 1 (use -v to see invocation)
+    ## constructing A pointing to 0x560a5bb45eb0
+    ## constructing A pointing to 0x560a5bb46ee0
+    ## copy assignment, old 0x560a5bb46ee0 other's 0x560a5bb45eb0 new 0x560a5bb46f00
+    ## destructing A, which pointed to 0x560a5bb46f00
+    ## destructing A, which pointed to 0x560a5bb45eb0
 
 ### Move Constructor
 
@@ -159,8 +163,10 @@ int main(){
 }
 ```
 
-    ## /usr/bin/ld: cannot open output file /home/cameron/Documents/NULearning/out/.tmp_c/7MeBe.out: No such file or directory
-    ## clang-12: error: linker command failed with exit code 1 (use -v to see invocation)
+    ## constructing A pointing to 0x562bd34c5eb0
+    ## move construction, old 0 other's 0x562bd34c5eb0 new 0x562bd34c5eb0
+    ## destructing A, which pointed to 0x562bd34c5eb0
+    ## destructing A, which pointed to 0
 
 ### Move Assignment
 
@@ -195,8 +201,10 @@ int main(){
 }
 ```
 
-    ## /usr/bin/ld: cannot open output file /home/cameron/Documents/NULearning/out/.tmp_c/PhybG.out: No such file or directory
-    ## clang-12: error: linker command failed with exit code 1 (use -v to see invocation)
+    ## constructing A pointing to 0x55e1e2e95eb0
+    ## move assignment, old 0 other's 0x55e1e2e95eb0 new 0x55e1e2e95eb0
+    ## destructing A, which pointed to 0x55e1e2e95eb0
+    ## destructing A, which pointed to 0
 
 ## Smart Pointers
 
@@ -224,8 +232,12 @@ int main(){
 }
 ```
 
-    ## /usr/bin/ld: cannot open output file /home/cameron/Documents/NULearning/out/.tmp_c/CAplE.out: No such file or directory
-    ## clang-12: error: linker command failed with exit code 1 (use -v to see invocation)
+    ## constructing A pointing to 0x55a7ae2d3ed0
+    ## constructing A pointing to 0x55a7ae2d4f20
+    ## destructing A, which pointed to 0x55a7ae2d4f20
+    ## constructing A pointing to 0x55a7ae2d4f20
+    ## destructing A, which pointed to 0x55a7ae2d4f20
+    ## destructing A, which pointed to 0x55a7ae2d3ed0
 
 We cannot copy a unique pointer, we can only move it. This prevents two
 separate objects owning the object that is pointed to.
@@ -239,7 +251,7 @@ int main(){
 }
 ```
 
-    ## /home/cameron/Documents/NULearning/cpp/.tmp_c/EpB0z.cpp:5:24: error: call to deleted constructor of 'std::unique_ptr<A>'
+    ## /home/cameron/Documents/NULearning/cpp/.tmp_c/5bjQw.cpp:5:24: error: call to deleted constructor of 'std::unique_ptr<A>'
     ##     std::unique_ptr<A> b = a;
     ##                        ^   ~
     ## /usr/bin/../lib64/gcc/x86_64-pc-linux-gnu/11.1.0/../../../../include/c++/11.1.0/bits/unique_ptr.h:468:7: note: 'unique_ptr' has been explicitly marked deleted here
@@ -257,8 +269,8 @@ int main(){
 }
 ```
 
-    ## /usr/bin/ld: cannot open output file /home/cameron/Documents/NULearning/out/.tmp_c/k2ZPb.out: No such file or directory
-    ## clang-12: error: linker command failed with exit code 1 (use -v to see invocation)
+    ## constructing A pointing to 0x55d446ae4ed0
+    ## destructing A, which pointed to 0x55d446ae4ed0
 
 ### Shared
 
