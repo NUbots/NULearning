@@ -56,13 +56,8 @@ implicit conversions, which are not at all obvious to the reader.
 
 1.  Write a program which uses `auto` to define a string, then use auto
     to define a custom class or struct type `T`.
-2.  Add a range-based for loop to the program, iterating through a
-    `std::vector<T>` of your class type. `std::vector` is a dynamically
-    sized array, which is very similar to Java’s `ArrayList`. It’s very
-    good and very fast - we use it all the time when we have to use the
-    heap (we stick to using the stack whenever possible though). Use
-    `emplace_back` to construct the `T` instances as you add them to the
-    `std::vector`.
+2.  Add a range-based for loop to the program, iterating through an
+    array of your class type.
 
 # Initializer Lists & Namespaces
 
@@ -201,8 +196,8 @@ int main() {
 }
 ```
 
-    ## constructing A pointing to 0x561224ee4eb0
-    ## destructing A, which pointed to 0x561224ee4eb0
+    ## constructing A pointing to 0x55b7c43aceb0
+    ## destructing A, which pointed to 0x55b7c43aceb0
 
 ### Copy Constructor
 
@@ -232,10 +227,10 @@ int main(){
 }
 ```
 
-    ## constructing A pointing to 0x556cdf3abeb0
-    ## copy construction, old 0 other's 0x556cdf3abeb0 new 0x556cdf3acee0
-    ## destructing A, which pointed to 0x556cdf3acee0
-    ## destructing A, which pointed to 0x556cdf3abeb0
+    ## constructing A pointing to 0x558b79973eb0
+    ## copy construction, old 0 other's 0x558b79973eb0 new 0x558b79974ee0
+    ## destructing A, which pointed to 0x558b79974ee0
+    ## destructing A, which pointed to 0x558b79973eb0
 
 ### Copy Assignment
 
@@ -266,11 +261,11 @@ int main() {
 }
 ```
 
-    ## constructing A pointing to 0x55ef97551eb0
-    ## constructing A pointing to 0x55ef97552ee0
-    ## copy assignment, old 0x55ef97552ee0 other's 0x55ef97551eb0 new 0x55ef97552f00
-    ## destructing A, which pointed to 0x55ef97552f00
-    ## destructing A, which pointed to 0x55ef97551eb0
+    ## constructing A pointing to 0x555fc63eaeb0
+    ## constructing A pointing to 0x555fc63ebee0
+    ## copy assignment, old 0x555fc63ebee0 other's 0x555fc63eaeb0 new 0x555fc63ebf00
+    ## destructing A, which pointed to 0x555fc63ebf00
+    ## destructing A, which pointed to 0x555fc63eaeb0
 
 ### Move Constructor
 
@@ -301,9 +296,9 @@ int main() {
 }
 ```
 
-    ## constructing A pointing to 0x55aff14a1eb0
-    ## move construction, old 0 other's 0x55aff14a1eb0 new 0x55aff14a1eb0
-    ## destructing A, which pointed to 0x55aff14a1eb0
+    ## constructing A pointing to 0x55f1415ffeb0
+    ## move construction, old 0 other's 0x55f1415ffeb0 new 0x55f1415ffeb0
+    ## destructing A, which pointed to 0x55f1415ffeb0
     ## destructing A, which pointed to 0
 
 ### Move Assignment
@@ -339,9 +334,9 @@ int main() {
 }
 ```
 
-    ## constructing A pointing to 0x558ace27beb0
-    ## move assignment, old 0 other's 0x558ace27beb0 new 0x558ace27beb0
-    ## destructing A, which pointed to 0x558ace27beb0
+    ## constructing A pointing to 0x555f6f304eb0
+    ## move assignment, old 0 other's 0x555f6f304eb0 new 0x555f6f304eb0
+    ## destructing A, which pointed to 0x555f6f304eb0
     ## destructing A, which pointed to 0
 
 ### Task
@@ -405,8 +400,8 @@ int main(){
 }
 ```
 
-    ## constructing A pointing to 0x55c51226aeb0
-    ## destructing A, which pointed to 0x55c51226aeb0
+    ## constructing A pointing to 0x55cf9d866eb0
+    ## destructing A, which pointed to 0x55cf9d866eb0
 
 ## Smart Pointers
 
@@ -445,12 +440,12 @@ int main() {
 }
 ```
 
-    ## constructing A pointing to 0x55c933562ed0
-    ## constructing A pointing to 0x55c933563f20
-    ## destructing A, which pointed to 0x55c933563f20
-    ## constructing A pointing to 0x55c933563f20
-    ## destructing A, which pointed to 0x55c933563f20
-    ## destructing A, which pointed to 0x55c933562ed0
+    ## constructing A pointing to 0x55ff46479ed0
+    ## constructing A pointing to 0x55ff4647af20
+    ## destructing A, which pointed to 0x55ff4647af20
+    ## constructing A pointing to 0x55ff4647af20
+    ## destructing A, which pointed to 0x55ff4647af20
+    ## destructing A, which pointed to 0x55ff46479ed0
 
 We cannot copy a unique pointer, we can only move it. This prevents two
 separate objects owning the object that is pointed to.
@@ -464,7 +459,7 @@ int main() {
 }
 ```
 
-    ## /home/cameron/Documents/NULearning/cpp/.tmp_c/gNm8m.cpp:5:24: error: call to deleted constructor of 'std::unique_ptr<A>'
+    ## /home/cameron/Documents/NULearning/cpp/.tmp_c/F9cJe.cpp:5:24: error: call to deleted constructor of 'std::unique_ptr<A>'
     ##     std::unique_ptr<A> b = a;
     ##                        ^   ~
     ## /usr/bin/../lib64/gcc/x86_64-pc-linux-gnu/11.1.0/../../../../include/c++/11.1.0/bits/unique_ptr.h:468:7: note: 'unique_ptr' has been explicitly marked deleted here
@@ -482,8 +477,8 @@ int main() {
 }
 ```
 
-    ## constructing A pointing to 0x5570e759ded0
-    ## destructing A, which pointed to 0x5570e759ded0
+    ## constructing A pointing to 0x560470dc1ed0
+    ## destructing A, which pointed to 0x560470dc1ed0
 
 #### Exception Memory Safety
 
@@ -505,9 +500,9 @@ int main() {
 }
 ```
 
-    ## constructing A pointing to 0x55cec43d0ed0
-    ## constructing A pointing to 0x55cec43d1f20
-    ## destructing A, which pointed to 0x55cec43d1f20
+    ## constructing A pointing to 0x55561c0bced0
+    ## constructing A pointing to 0x55561c0bdf20
+    ## destructing A, which pointed to 0x55561c0bdf20
 
 #### Loaning
 
@@ -552,8 +547,8 @@ int main(){
 }
 ```
 
-    ## constructing A pointing to 0x557b08c95ed0
-    ## destructing A, which pointed to 0x557b08c95ed0
+    ## constructing A pointing to 0x55e1f0d3bed0
+    ## destructing A, which pointed to 0x55e1f0d3bed0
 
 ### Weak
 
@@ -595,12 +590,12 @@ int main() {
 }
 ```
 
-    ## Constructor 0x55eb8007bec0
-    ## Constructor 0x55eb8007cf00
-    ## Constructor 0x55eb8007cf30
-    ## Constructor 0x55eb8007cf60
-    ## Destructor 0x55eb8007cf60
-    ## Destructor 0x55eb8007cf30
+    ## Constructor 0x5575822ffec0
+    ## Constructor 0x557582300f00
+    ## Constructor 0x557582300f30
+    ## Constructor 0x557582300f60
+    ## Destructor 0x557582300f60
+    ## Destructor 0x557582300f30
 
 ### Deleter
 
@@ -644,6 +639,8 @@ space when you plan to add more than one element.
 Removing and adding elements near the start of the vector is slow, see
 [Reference Page](https://en.cppreference.com/w/cpp/container/vector) for
 time complexities, use a deque when you plan to do this often.
+
+If you have done java, this is similar to `ArrayList`.
 
 ## Deque
 

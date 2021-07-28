@@ -153,7 +153,7 @@ Eigen's docs list using the `auto` keyword for their types as a [common pitfall]
 ### Task
 
 a. Write a program which uses `auto` to define a string, then use auto to define a custom class or struct type `T`.
-b. Add a range-based for loop to the program, iterating through a `std::vector<T>` of your class type. `std::vector` is a dynamically sized array, which is very similar to Java's `ArrayList`. It's very good and very fast - we use it all the time when we have to use the heap (we stick to using the stack whenever possible though). Use `emplace_back` to construct the `T` instances as you add them to the `std::vector`.
+b. Add a range-based for loop to the program, iterating through an array of your class type.
 
 # Initializer Lists & Namespaces
 
@@ -592,6 +592,8 @@ This is an array where we pass the size of the array at run-time, we can also re
 It has both a size and a capacity, size is the number of current elements and capacity is the current size of the underlying c array. When the size reaches capacity, c++ will allocate more memory and increase the capacity. Make sure that you try to reduce the number of time that the capacity is changed, one way to do this is to reserve space when you plan to add more than one element.
 
 Removing and adding elements near the start of the vector is slow, see [Reference Page](https://en.cppreference.com/w/cpp/container/vector) for time complexities, use a deque when you plan to do this often.
+
+If you have done java, this is similar to `ArrayList`.
 
 ## Deque
 
