@@ -4,7 +4,7 @@ The compiler infers the type at compile time.
 
 ``` cpp
 #include <iostream>
-int main(){
+int main() {
     auto x = 5;
     int y = x;
     std::cout << "x = " << x << ", y = " << y << std::endl;
@@ -13,10 +13,60 @@ int main(){
 
     ## x = 5, y = 5
 
-### Task 1.
+The `auto` keyword can also be used to define references and “raw”
+pointers, using `auto&` and `auto*`. The `const` keyword also applies as
+you would expect to `auto` declarations.
 
-Write a program which uses `auto` to define a string, then use auto to
-define a class or struct type.
+Some C++ people think you should “almost always \[use\] auto”, but we
+don’t. Our most common use of `auto` is for the iterator’s object in a
+range-based `for` loop, as in the following example:
+
+``` cpp
+#include <iostream>
+#include <array>
+#include <string>
+
+std::array<5, std::string> letters {"a", "b", "c", "d", "e"};
+
+// Range-based for loops automatically create iterators for containers
+// which support them, such as std::array, and dereference them for us. 
+// You should usually use `const auto&`, `auto&` (or `auto&&`) for these 
+// variables, because they're huge, ugly, std::iterator types which are 
+// hard to read
+for (const auto& letter : letters) {
+    std::cout << letter << std::endl;
+}
+```
+
+    ## /home/cameron/Documents/NULearning/cpp/.tmp_c/4N1L7.cpp:5:12: error: template argument for template type parameter must be a type
+    ## std::array<5, std::string> letters {"a", "b", "c", "d", "e"};
+    ##            ^
+    ## /usr/bin/../lib64/gcc/x86_64-pc-linux-gnu/11.1.0/../../../../include/c++/11.1.0/array:94:21: note: template parameter is declared here
+    ##   template<typename _Tp, std::size_t _Nm>
+    ##                     ^
+    ## /home/cameron/Documents/NULearning/cpp/.tmp_c/4N1L7.cpp:12:1: error: expected unqualified-id
+    ## for (const auto& letter : letters) {
+    ## ^
+    ## 2 errors generated.
+
+### DO NOT USE `auto` FOR EIGEN TYPES
+
+Eigen’s docs list using the `auto` keyword for their types as a [common
+pitfall](https://eigen.tuxfamily.org/dox/TopicPitfalls.html). This is
+mostly because Eigen uses intermediate types all the time with many
+implicit conversions, which are not at all obvious to the reader.
+
+### Task
+
+1.  Write a program which uses `auto` to define a string, then use auto
+    to define a custom class or struct type `T`.
+2.  Add a range-based for loop to the program, iterating through a
+    `std::vector<T>` of your class type. `std::vector` is a dynamically
+    sized array, which is very similar to Java’s `ArrayList`. It’s very
+    good and very fast - we use it all the time when we have to use the
+    heap (we stick to using the stack whenever possible though). Use
+    `emplace_back` to construct the `T` instances as you add them to the
+    `std::vector`.
 
 # Object Ownership
 
@@ -32,7 +82,7 @@ out all the common functions that deal with ownership.
 ### Attributes
 
 ``` cpp
-struct A{
+struct A {
     int* x; // Usually you shouldn't use "raw" pointers like this
             // this is just for illustrative purposes
 };
@@ -55,7 +105,7 @@ A(const int& _x) : x(new int(_x)) {
 // Destructor
 ~A() {
     std::cout << "destructing A, which pointed to " << x << std::endl;
-    if (x != nullptr){
+    if (x != nullptr) {
         delete x;
         x = nullptr;
     }
@@ -69,8 +119,8 @@ int main() {
 }
 ```
 
-    ## constructing A pointing to 0x561b1a0f8eb0
-    ## destructing A, which pointed to 0x561b1a0f8eb0
+    ## constructing A pointing to 0x562e8fedeeb0
+    ## destructing A, which pointed to 0x562e8fedeeb0
 
 ### Copy Constructor
 
@@ -100,10 +150,10 @@ int main(){
 }
 ```
 
-    ## constructing A pointing to 0x563c999e3eb0
-    ## copy construction, old 0 other's 0x563c999e3eb0 new 0x563c999e4ee0
-    ## destructing A, which pointed to 0x563c999e4ee0
-    ## destructing A, which pointed to 0x563c999e3eb0
+    ## constructing A pointing to 0x55892ee6beb0
+    ## copy construction, old 0 other's 0x55892ee6beb0 new 0x55892ee6cee0
+    ## destructing A, which pointed to 0x55892ee6cee0
+    ## destructing A, which pointed to 0x55892ee6beb0
 
 ### Copy Assignment
 
@@ -112,10 +162,10 @@ something we must first clean that up.
 
 ``` cpp
 // Copy assignment
-A& operator=(const A& other){
+A& operator=(const A& other) {
     std::cout << "copy assignment, old " << x
     << " other's " << other.x;
-    if(x != nullptr){
+    if(x != nullptr) {
         delete x;
         x = nullptr;
     }
@@ -127,18 +177,18 @@ A& operator=(const A& other){
 
 ``` cpp
 #include "A.hpp"
-int main(){
+int main() {
     A a{1};
     A b{2};
     b = a;
 }
 ```
 
-    ## constructing A pointing to 0x55c671b3deb0
-    ## constructing A pointing to 0x55c671b3eee0
-    ## copy assignment, old 0x55c671b3eee0 other's 0x55c671b3deb0 new 0x55c671b3ef00
-    ## destructing A, which pointed to 0x55c671b3ef00
-    ## destructing A, which pointed to 0x55c671b3deb0
+    ## constructing A pointing to 0x56518db43eb0
+    ## constructing A pointing to 0x56518db44ee0
+    ## copy assignment, old 0x56518db44ee0 other's 0x56518db43eb0 new 0x56518db44f00
+    ## destructing A, which pointed to 0x56518db44f00
+    ## destructing A, which pointed to 0x56518db43eb0
 
 ### Move Constructor
 
@@ -169,9 +219,9 @@ int main() {
 }
 ```
 
-    ## constructing A pointing to 0x55b62901ceb0
-    ## move construction, old 0 other's 0x55b62901ceb0 new 0x55b62901ceb0
-    ## destructing A, which pointed to 0x55b62901ceb0
+    ## constructing A pointing to 0x55a021a96eb0
+    ## move construction, old 0 other's 0x55a021a96eb0 new 0x55a021a96eb0
+    ## destructing A, which pointed to 0x55a021a96eb0
     ## destructing A, which pointed to 0
 
 ### Move Assignment
@@ -207,10 +257,49 @@ int main() {
 }
 ```
 
-    ## constructing A pointing to 0x5598c6cbbeb0
-    ## move assignment, old 0 other's 0x5598c6cbbeb0 new 0x5598c6cbbeb0
-    ## destructing A, which pointed to 0x5598c6cbbeb0
+    ## constructing A pointing to 0x55d0a14c5eb0
+    ## move assignment, old 0 other's 0x55d0a14c5eb0 new 0x55d0a14c5eb0
+    ## destructing A, which pointed to 0x55d0a14c5eb0
     ## destructing A, which pointed to 0
+
+### Task
+
+Create a struct which has the following:
+
+1.  A default constructor which prints the string “Default constructor
+    called”
+2.  A copy constructor which prints the string “Copy constructor called”
+3.  A copy operator which prints the string “Copy operator called”
+4.  A move constructor which prints the string “Move constructor called”
+5.  A move operator which prints the string “Move operator called”
+
+Once you have defined these, write a program which uses each of them,
+printing all 5 strings.
+
+#### Post task notes
+
+The copy and move constructors/operators along with the destructor, are
+known as the special member functions. They are automatically defined
+for all classes and structs, unless you provide a definition for them
+yourself.
+
+The **Rule of 5** says that if you define a non-default destructor, you
+should define all 5 special member functions explicitly or delete them.
+The following example implements a non-default destructor to handle a
+class’s file descriptor, abiding by the rule of 5:
+
+``` cpp
+A() : fd(-1); // Default file descriptor value
+~A() {
+    close(fd); // Close the file descriptor on destruction, which is quite typical
+}
+// Delete our other special member functions, so we don't have to deal with
+// transferral of the file descriptor to other `A` instances
+A(A& other) = delete;
+A(A&& other) = delete;
+A& operator=(A& other) = delete;
+A& operator=(A&& other) = delete;
+```
 
 ## Smart Pointers
 
@@ -249,12 +338,12 @@ int main() {
 }
 ```
 
-    ## constructing A pointing to 0x55a50e092ed0
-    ## constructing A pointing to 0x55a50e093f20
-    ## destructing A, which pointed to 0x55a50e093f20
-    ## constructing A pointing to 0x55a50e093f20
-    ## destructing A, which pointed to 0x55a50e093f20
-    ## destructing A, which pointed to 0x55a50e092ed0
+    ## constructing A pointing to 0x56124f716ed0
+    ## constructing A pointing to 0x56124f717f20
+    ## destructing A, which pointed to 0x56124f717f20
+    ## constructing A pointing to 0x56124f717f20
+    ## destructing A, which pointed to 0x56124f717f20
+    ## destructing A, which pointed to 0x56124f716ed0
 
 We cannot copy a unique pointer, we can only move it. This prevents two
 separate objects owning the object that is pointed to.
@@ -268,7 +357,7 @@ int main() {
 }
 ```
 
-    ## /home/cameron/Documents/NULearning/cpp/.tmp_c/e6erl.cpp:5:24: error: call to deleted constructor of 'std::unique_ptr<A>'
+    ## /home/cameron/Documents/NULearning/cpp/.tmp_c/ASulF.cpp:5:24: error: call to deleted constructor of 'std::unique_ptr<A>'
     ##     std::unique_ptr<A> b = a;
     ##                        ^   ~
     ## /usr/bin/../lib64/gcc/x86_64-pc-linux-gnu/11.1.0/../../../../include/c++/11.1.0/bits/unique_ptr.h:468:7: note: 'unique_ptr' has been explicitly marked deleted here
@@ -286,8 +375,8 @@ int main() {
 }
 ```
 
-    ## constructing A pointing to 0x55ff4b67fed0
-    ## destructing A, which pointed to 0x55ff4b67fed0
+    ## constructing A pointing to 0x556926f66ed0
+    ## destructing A, which pointed to 0x556926f66ed0
 
 #### Exception Memory Safety
 
@@ -309,9 +398,9 @@ int main() {
 }
 ```
 
-    ## constructing A pointing to 0x55e7152beed0
-    ## constructing A pointing to 0x55e7152bff20
-    ## destructing A, which pointed to 0x55e7152bff20
+    ## constructing A pointing to 0x56382ca55ed0
+    ## constructing A pointing to 0x56382ca56f20
+    ## destructing A, which pointed to 0x56382ca56f20
 
 #### Loaning
 
@@ -356,8 +445,8 @@ int main(){
 }
 ```
 
-    ## constructing A pointing to 0x561d72a66ed0
-    ## destructing A, which pointed to 0x561d72a66ed0
+    ## constructing A pointing to 0x55e95a19ded0
+    ## destructing A, which pointed to 0x55e95a19ded0
 
 ### Weak
 
@@ -398,12 +487,12 @@ int main() {
 }
 ```
 
-    ## Constructor 0x55c21280bec0
-    ## Constructor 0x55c21280cf00
-    ## Constructor 0x55c21280cf30
-    ## Constructor 0x55c21280cf60
-    ## Destructor 0x55c21280cf60
-    ## Destructor 0x55c21280cf30
+    ## Constructor 0x55ec676f7ec0
+    ## Constructor 0x55ec676f8f00
+    ## Constructor 0x55ec676f8f30
+    ## Constructor 0x55ec676f8f60
+    ## Destructor 0x55ec676f8f60
+    ## Destructor 0x55ec676f8f30
 
 ### Deleter
 
