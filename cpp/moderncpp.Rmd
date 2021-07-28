@@ -499,7 +499,7 @@ If another object needs to temporarily have access to an object, you pass a refe
 
 Webots uses raw pointers to loan objects to us, which is why we do not use smart pointers with webots code.
 
-```{cpp}
+```{cpp, eval=FALSE}
 #include <memory>
 #include <iostream>
 void borrow_function(const int& x) {

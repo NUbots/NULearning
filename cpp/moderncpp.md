@@ -196,8 +196,8 @@ int main() {
 }
 ```
 
-    ## constructing A pointing to 0x55b7c43aceb0
-    ## destructing A, which pointed to 0x55b7c43aceb0
+    ## constructing A pointing to 0x55f46264deb0
+    ## destructing A, which pointed to 0x55f46264deb0
 
 ### Copy Constructor
 
@@ -227,10 +227,10 @@ int main(){
 }
 ```
 
-    ## constructing A pointing to 0x558b79973eb0
-    ## copy construction, old 0 other's 0x558b79973eb0 new 0x558b79974ee0
-    ## destructing A, which pointed to 0x558b79974ee0
-    ## destructing A, which pointed to 0x558b79973eb0
+    ## constructing A pointing to 0x55ba92946eb0
+    ## copy construction, old 0 other's 0x55ba92946eb0 new 0x55ba92947ee0
+    ## destructing A, which pointed to 0x55ba92947ee0
+    ## destructing A, which pointed to 0x55ba92946eb0
 
 ### Copy Assignment
 
@@ -261,11 +261,11 @@ int main() {
 }
 ```
 
-    ## constructing A pointing to 0x555fc63eaeb0
-    ## constructing A pointing to 0x555fc63ebee0
-    ## copy assignment, old 0x555fc63ebee0 other's 0x555fc63eaeb0 new 0x555fc63ebf00
-    ## destructing A, which pointed to 0x555fc63ebf00
-    ## destructing A, which pointed to 0x555fc63eaeb0
+    ## constructing A pointing to 0x562cf3c97eb0
+    ## constructing A pointing to 0x562cf3c98ee0
+    ## copy assignment, old 0x562cf3c98ee0 other's 0x562cf3c97eb0 new 0x562cf3c98f00
+    ## destructing A, which pointed to 0x562cf3c98f00
+    ## destructing A, which pointed to 0x562cf3c97eb0
 
 ### Move Constructor
 
@@ -296,9 +296,9 @@ int main() {
 }
 ```
 
-    ## constructing A pointing to 0x55f1415ffeb0
-    ## move construction, old 0 other's 0x55f1415ffeb0 new 0x55f1415ffeb0
-    ## destructing A, which pointed to 0x55f1415ffeb0
+    ## constructing A pointing to 0x55bf7004beb0
+    ## move construction, old 0 other's 0x55bf7004beb0 new 0x55bf7004beb0
+    ## destructing A, which pointed to 0x55bf7004beb0
     ## destructing A, which pointed to 0
 
 ### Move Assignment
@@ -334,9 +334,9 @@ int main() {
 }
 ```
 
-    ## constructing A pointing to 0x555f6f304eb0
-    ## move assignment, old 0 other's 0x555f6f304eb0 new 0x555f6f304eb0
-    ## destructing A, which pointed to 0x555f6f304eb0
+    ## constructing A pointing to 0x56028d84deb0
+    ## move assignment, old 0 other's 0x56028d84deb0 new 0x56028d84deb0
+    ## destructing A, which pointed to 0x56028d84deb0
     ## destructing A, which pointed to 0
 
 ### Task
@@ -400,8 +400,8 @@ int main(){
 }
 ```
 
-    ## constructing A pointing to 0x55cf9d866eb0
-    ## destructing A, which pointed to 0x55cf9d866eb0
+    ## constructing A pointing to 0x559c70a88eb0
+    ## destructing A, which pointed to 0x559c70a88eb0
 
 ## Smart Pointers
 
@@ -440,12 +440,12 @@ int main() {
 }
 ```
 
-    ## constructing A pointing to 0x55ff46479ed0
-    ## constructing A pointing to 0x55ff4647af20
-    ## destructing A, which pointed to 0x55ff4647af20
-    ## constructing A pointing to 0x55ff4647af20
-    ## destructing A, which pointed to 0x55ff4647af20
-    ## destructing A, which pointed to 0x55ff46479ed0
+    ## constructing A pointing to 0x56098ca6eed0
+    ## constructing A pointing to 0x56098ca6ff20
+    ## destructing A, which pointed to 0x56098ca6ff20
+    ## constructing A pointing to 0x56098ca6ff20
+    ## destructing A, which pointed to 0x56098ca6ff20
+    ## destructing A, which pointed to 0x56098ca6eed0
 
 We cannot copy a unique pointer, we can only move it. This prevents two
 separate objects owning the object that is pointed to.
@@ -459,7 +459,7 @@ int main() {
 }
 ```
 
-    ## /home/cameron/Documents/NULearning/cpp/.tmp_c/F9cJe.cpp:5:24: error: call to deleted constructor of 'std::unique_ptr<A>'
+    ## /home/cameron/Documents/NULearning/cpp/.tmp_c/35Dic.cpp:5:24: error: call to deleted constructor of 'std::unique_ptr<A>'
     ##     std::unique_ptr<A> b = a;
     ##                        ^   ~
     ## /usr/bin/../lib64/gcc/x86_64-pc-linux-gnu/11.1.0/../../../../include/c++/11.1.0/bits/unique_ptr.h:468:7: note: 'unique_ptr' has been explicitly marked deleted here
@@ -477,8 +477,8 @@ int main() {
 }
 ```
 
-    ## constructing A pointing to 0x560470dc1ed0
-    ## destructing A, which pointed to 0x560470dc1ed0
+    ## constructing A pointing to 0x564928b8ded0
+    ## destructing A, which pointed to 0x564928b8ded0
 
 #### Exception Memory Safety
 
@@ -500,9 +500,9 @@ int main() {
 }
 ```
 
-    ## constructing A pointing to 0x55561c0bced0
-    ## constructing A pointing to 0x55561c0bdf20
-    ## destructing A, which pointed to 0x55561c0bdf20
+    ## constructing A pointing to 0x558ac681eed0
+    ## constructing A pointing to 0x558ac681ff20
+    ## destructing A, which pointed to 0x558ac681ff20
 
 #### Loaning
 
@@ -526,8 +526,6 @@ int main() {
 }
 ```
 
-    ## 0
-
 ### Shared
 
 A shared pointer allows for multiple objects to have access to the
@@ -547,8 +545,8 @@ int main(){
 }
 ```
 
-    ## constructing A pointing to 0x55e1f0d3bed0
-    ## destructing A, which pointed to 0x55e1f0d3bed0
+    ## constructing A pointing to 0x56001b014ed0
+    ## destructing A, which pointed to 0x56001b014ed0
 
 ### Weak
 
@@ -590,12 +588,12 @@ int main() {
 }
 ```
 
-    ## Constructor 0x5575822ffec0
-    ## Constructor 0x557582300f00
-    ## Constructor 0x557582300f30
-    ## Constructor 0x557582300f60
-    ## Destructor 0x557582300f60
-    ## Destructor 0x557582300f30
+    ## Constructor 0x565193b65ec0
+    ## Constructor 0x565193b66f00
+    ## Constructor 0x565193b66f30
+    ## Constructor 0x565193b66f60
+    ## Destructor 0x565193b66f60
+    ## Destructor 0x565193b66f30
 
 ### Deleter
 
