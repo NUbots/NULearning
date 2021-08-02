@@ -112,9 +112,163 @@ struct A{
 };
 ```
 
+# Struct
+
+`class` has all its members private by default. 
+In c++ a `struct` is a `class` that has all its members public by default.
+
 # Const
 
-East vs West
+Const declares a type immutable, that is that the value is read only and cannot be mutated.
+
+## Variables
+
+To declare a variable `const` simply add the keyword to the type.
+
+```{cpp}
+#include <iostream>
+int main(){
+    const int x = 1;
+    const int& y = x;
+    std::cout << "x = " << x << ", y = " << y << std::endl;
+}
+```
+
+```{cpp}
+int main(){
+    const int x = 1;
+    x ++;
+}
+```
+
+## Parameters
+
+This is usually used with pass by reference, but can be used with pass by value even though that would usually be pointless.
+Having a pass by reference parameter declared as constant allows the caller to be sure that the parameter they pass in will not be changed.
+
+```{cpp}
+#include <iostream>
+void cool_print(const int& x, const int& y){
+    std::cout << "x " << x << " y " << y << std::endl;
+}
+
+void definitly_benign_print(const int& x, int& y){
+    std::cout << "x " << x << " y " << y++ << std::endl;
+}
+
+int main(){
+    const int a = 7;
+    int b = 5;
+    cool_print(a, b);
+    definitly_benign_print(a, b);
+    cool_print(a, b);
+}
+```
+
+
+## Methods
+
+To add const to a method add the keyword to the end of the signature. This means that the method cannot mutate any of the attributes.
+
+If there is an instance of a type declared const it cannot call any method that is not declared const.
+
+```{cpp}
+#include <iostream>
+struct T {
+    int x = 1;
+    
+    int get_x() const {
+        return x;
+    }
+    
+    void set_x(const int& x_) {
+        x = x_;
+    }
+};
+
+int main(){
+    T a;
+    a.set_x(5);
+    std::cout << "a " << a.get_x() << std::endl;
+    
+    const T b;
+    b.set_x(5);
+    std::cout << "b " << b.get_x() << std::endl;
+}
+```
+
+## Const Type
+
+The `const` version is actually a distinct type to the original type but `c++` can implicitly cast to a `const` type from the non-const type.
+e.g. `std::array<const int, 1>` and `std::array<int, 1>` are distinct types, this can be observed by using the subscript operator as it will return `const int&` and `int&` respectively.
+
+``` {cpp}
+template <typename T>
+struct simple_container {
+    T x;
+};
+
+int main(){
+    const simple_container<int> x = {1};
+    simple_container<int> y = {2};
+    y = x;
+    simple_container<const int> z = {3};
+    z = y;
+}
+```
+
+In this example we cannot convert from `simple_container<int>` to `simple_container<const int>` as they are different types, and thus need an explicit conversion defined.
+
+## Raw Pointers
+
+There are some caveats with raw pointers, but we don't use raw pointers, so if that ever is the case there are many other resources explaining what is happening.
+
+## Task
+
+a. Add const to the following variables that don't change.
+
+``` cpp
+#include <iostream>
+int main(){
+    int x = 2;
+    int y = 7;
+
+    int accumilate = 0;
+    for (int i = 0; i < y; i++){
+        accumilate += x;
+    }
+    std::cout << accumilate << std::endl;
+}
+```
+
+b. Add const to the following methods that don't mutate the attributes.
+
+``` cpp
+struct square {
+    int x;
+    int y;
+    int width;
+    int height;
+
+    int get_x() {
+        reuturn x;
+    }
+
+    int get_y() {
+        return y;
+    }
+
+    int area() {
+        return width * height;
+    }
+
+    int double_area() {
+        width *= 1.4142;
+        height *= 1.4142;
+        return area();
+    }
+}
+```
 
 # Auto Keyword
 
@@ -164,7 +318,7 @@ b. Add a range-based for loop to the program, iterating through an array of your
 
 Initializer lists can be used in constructors to initialise values for member variables, even if they're const. Here is an example of the syntax:
 
-```{cpp, eval=FALSE}
+``` cpp
 #include "kev/FooLongName.hpp"
 
 namespace bar::baz {
@@ -172,19 +326,19 @@ namespace bar::baz {
 
 This scope defines a namespace `baz` inside of the namespace `bar`.
 
-```{cpp, eval=FALSE}
+``` cpp
     using Foo = kev::FooLongName;
 ```
 
 This is a type alias. These serve the same function as `typedef` statements, except they don't declare a new type like `typedef`s do. These can make things more concise but we don't use them often, for the sake of clarity over conciseness.
 
-```{cpp, eval=FALSE}
+``` cpp
     using kev::FooLongName::getAlternativeConfig;
 ```
 
 Adds this name into this namespace. We do use these often, to import function names, so we don't have huge, long function names within four nested namespaces
 
-```{cpp, eval=FALSE}
+``` cpp
     class A {
         const int a = 0; // Can still be given another value by a constructor, by using
                          // an initializer list, despite being `const`
@@ -211,7 +365,7 @@ This example makes liberal use of _namespaces_. Namespaces let us separate funct
 
 **Anonymous namespaces** are namespaces which don't have names. These restrict use of the things inside of the namespace to the things inside the same file as the things in the anonymous namespace. Anonymous namespaces [should not be used in headers](https://wiki.sei.cmu.edu/confluence/display/cplusplus/DCL59-CPP.+Do+not+define+an+unnamed+namespace+in+a+header+file#:~:text=Do%20not%20define%20an%20unnamed%20namespace%20in%20a%20header%20file&text=When%20an%20unnamed%20namespace%20is,used%20within%20that%20translation%20unit.). Here is an example using an anonymous namespace:
 
-```{cpp, eval=FALSE}
+``` cpp
 #include "foo.hpp"
 
 // Anonymous namespace - keeps these things accessible only within this file
@@ -239,7 +393,7 @@ Firstly we'll create an object that owns some heap memory and will print out all
 
 ### Attributes
 
-```{cpp, eval=FALSE}
+``` cpp
 struct A {
     int* x; // Usually you shouldn't use "raw" pointers like this
             // this is just for illustrative purposes
@@ -250,7 +404,7 @@ struct A {
 
 We'll create the constructor and destructor similar as to what you would have done in **SENG1120**.
 
-```{cpp, eval=FALSE}
+``` cpp
 // Default Constructor
 A() : x(nullptr) {}
 
@@ -281,7 +435,7 @@ For copy construction we will create a deep copy of the object. This means that 
 
 We do not gain any ownership over anything relating to the parameter but we do now own the newly constructed integer.
 
-```{cpp, eval=FALSE}
+``` cpp
 // Copy constructor
 A(const A& other) {
     std::cout << "copy constructor, old " << x
@@ -303,7 +457,7 @@ int main(){
 
 Similar to copy construction, but if this object has ownership of something we must first clean that up.
 
-```{cpp, eval=FALSE}
+``` cpp
 // Copy assignment
 A& operator=(const A& other) {
     std::cout << "copy assignment, old " << x
@@ -330,7 +484,7 @@ int main() {
 
 For a move constructor the parameter that is passed has had its ownership yielded, so we can be sure that nothing else will use or free the passed in resources. This allows us to do a shallow copy of the pointed to values, this means that we can just copy the pointers.
 
-```{cpp, eval=FALSE}
+``` cpp
 // Move constructor
 A(A&& other) {
     std::cout << "move constructor, old " << x
@@ -356,7 +510,7 @@ int main() {
 
 Similar to move construction, but if this object has ownership of something we must first clean that up.
 
-```{cpp, eval=FALSE}
+``` cpp
 // Move assignment
 A& operator=(A&& other) {
     std::cout << "move assignment, old " << x
@@ -401,7 +555,7 @@ The copy and move constructors/operators along with the destructor, are known as
 
 The **Rule of 5** says that if you define a non-default destructor, you should define all 5 special member functions explicitly or delete them. The following example implements a non-default destructor to handle a class's file descriptor, abiding by the rule of 5:
 
-```{cpp, eval=FALSE}
+``` cpp
 A() : fd(-1); // Default file descriptor value
 ~A() {
     close(fd); // Close the file descriptor on destruction, which is quite typical
@@ -502,9 +656,7 @@ int main() {
 
 If another object needs to temporarily have access to an object, you pass a reference to the pointed to object as a parameter. The object that gains temporary access and should assume that the object is freed after the function has returned.
 
-Webots uses raw pointers to loan objects to us, which is why we do not use smart pointers with webots code.
-
-```{cpp, eval=FALSE}
+``` cpp
 #include <memory>
 #include <iostream>
 void borrow_function(const int& x) {
@@ -515,6 +667,8 @@ int main() {
     borrow_function(*a);
 }
 ```
+
+Webots uses raw pointers to loan objects to us, which is why we do not use smart pointers with webots code.
 
 ### Shared
 
