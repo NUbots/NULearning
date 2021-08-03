@@ -4,7 +4,7 @@ autor: "Cameron Murtagh"
 date: "27/7/2021"
 output:
     md_document:
-        variant: markdown_github+backtick_code_blocks
+        variant: gfm
 ---
 
 ```{r setup, include=FALSE}
@@ -312,7 +312,35 @@ Eigen's docs list using the `auto` keyword for their types as a [common pitfall]
 ### Task
 
 a. Write a program which uses `auto` to define a string, then use auto to define a custom class or struct type `T`.
+
+
 b. Add a range-based for loop to the program, iterating through an array of your class type.
+
+``` cpp
+#include <array>
+#include <string>
+#include <iostream>
+struct T {
+    int x;
+    T (cons int& x_) : x(x_) {}
+}
+
+int main() {
+    // Define a your string here, call it str
+    
+    // Define an instance of type T here, call it t
+
+    std::cout << "str: " << str << ", t.x:" << t.x << std::endl;
+
+    std::array<T, 3> a = {T(1), T(2), T(3)};
+
+    // Add the start of your for loop here
+    {
+        std::cout << i.x << std::endl;
+    }
+}
+
+```
 
 # Initializer Lists & Namespaces
 
@@ -549,6 +577,35 @@ Create a struct which has the following:
 
 Once you have defined these, write a program which uses each of them, printing all 5 strings.
 
+``` cpp
+struct ownership_class{
+    // Make an attribute here
+
+    // Make a default constructor here
+    
+    // Make a copy constructor here
+
+    // Make a move constructor here
+
+    // Make a copy assignment operator here
+
+    // Make a move assignment operator here
+    
+};
+
+ownership_class test_function() {
+    return ownership_class();
+}
+
+int main() {
+    ownership_class a; // Default construct
+    ownership_class b{a}; // Copy construct
+    ownership_class c{test_function()}; // Move construct
+    ownership_class d = a; // Copy assignment
+    ownership_class c = test_function(); // Move assignment
+}
+```
+
 #### Post task notes
 
 The copy and move constructors/operators along with the destructor, are known as the special member functions. They are automatically defined for all classes and structs, unless you provide a definition for them yourself. 
@@ -580,12 +637,13 @@ Move semantics use r-value and copy semantics use l-value.
 
 ```{cpp}
 #include "A.hpp"
-A cool(){return A(5);}
-int main(){
+A cool() {
+    return A(5);
+}
+int main() {
     A x = cool();
 }
 ```
-
 
 ## Smart Pointers
 
@@ -737,6 +795,20 @@ int main() {
     auto a = std::unique_ptr<addrinfo, decltype(&freeaddrinfo)>(info, freeaddrinfo);
 }
 ```
+
+### Task
+
+a. Store an integer in a unique pointer using `make_unique`
+
+
+``` cpp
+#include <memory>
+
+int main(){
+    // Put unique pointer here
+}
+```
+
 
 # Standard Library Features
 

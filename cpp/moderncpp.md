@@ -1,3 +1,12 @@
+---
+autor: Cameron Murtagh
+date: 27/7/2021
+output:
+  md_document:
+    variant: gfm
+title: Modern C++
+---
+
 # Struct
 
 `class` has all its members private by default. In c++ a `struct` is a
@@ -30,10 +39,10 @@ int main(){
 }
 ```
 
-    ## /home/cameron/Documents/NULearning/cpp/.tmp_c/GevNS.cpp:3:7: error: cannot assign to variable 'x' with const-qualified type 'const int'
+    ## /home/cameron/Documents/NULearning/cpp/.tmp_c/0dbWw.cpp:3:7: error: cannot assign to variable 'x' with const-qualified type 'const int'
     ##     x ++;
     ##     ~ ^
-    ## /home/cameron/Documents/NULearning/cpp/.tmp_c/GevNS.cpp:2:15: note: variable 'x' declared const here
+    ## /home/cameron/Documents/NULearning/cpp/.tmp_c/0dbWw.cpp:2:15: note: variable 'x' declared const here
     ##     const int x = 1;
     ##     ~~~~~~~~~~^~~~~
     ## 1 error generated.
@@ -101,10 +110,10 @@ int main(){
 }
 ```
 
-    ## /home/cameron/Documents/NULearning/cpp/.tmp_c/gPaCP.cpp:20:5: error: 'this' argument to member function 'set_x' has type 'const T', but function is not marked const
+    ## /home/cameron/Documents/NULearning/cpp/.tmp_c/jYlRm.cpp:20:5: error: 'this' argument to member function 'set_x' has type 'const T', but function is not marked const
     ##     b.set_x(5);
     ##     ^
-    ## /home/cameron/Documents/NULearning/cpp/.tmp_c/gPaCP.cpp:9:10: note: 'set_x' declared here
+    ## /home/cameron/Documents/NULearning/cpp/.tmp_c/jYlRm.cpp:9:10: note: 'set_x' declared here
     ##     void set_x(const int& x_) {
     ##          ^
     ## 1 error generated.
@@ -132,10 +141,10 @@ int main(){
 }
 ```
 
-    ## /home/cameron/Documents/NULearning/cpp/.tmp_c/izaMp.cpp:11:7: error: no viable overloaded '='
+    ## /home/cameron/Documents/NULearning/cpp/.tmp_c/SaD4z.cpp:11:7: error: no viable overloaded '='
     ##     z = y;
     ##     ~ ^ ~
-    ## /home/cameron/Documents/NULearning/cpp/.tmp_c/izaMp.cpp:2:8: note: candidate function (the implicit copy assignment operator) not viable: no known conversion from 'simple_container<int>' to 'const simple_container<const int>' for 1st argument
+    ## /home/cameron/Documents/NULearning/cpp/.tmp_c/SaD4z.cpp:2:8: note: candidate function (the implicit copy assignment operator) not viable: no known conversion from 'simple_container<int>' to 'const simple_container<const int>' for 1st argument
     ## struct simple_container {
     ##        ^
     ## 1 error generated.
@@ -168,7 +177,7 @@ int main(){
 }
 ```
 
-1.  Add const to the following methods that don’t mutate the attributes.
+2.  Add const to the following methods that don’t mutate the attributes.
 
 ``` cpp
 struct square {
@@ -255,8 +264,34 @@ implicit conversions, which are not at all obvious to the reader.
 
 1.  Write a program which uses `auto` to define a string, then use auto
     to define a custom class or struct type `T`.
+
 2.  Add a range-based for loop to the program, iterating through an
     array of your class type.
+
+``` cpp
+#include <array>
+#include <string>
+#include <iostream>
+struct T {
+    int x;
+    T (cons int& x_) : x(x_) {}
+}
+
+int main() {
+    // Define a your string here, call it str
+    
+    // Define an instance of type T here, call it t
+
+    std::cout << "str: " << str << ", t.x:" << t.x << std::endl;
+
+    std::array<T, 3> a = {T(1), T(2), T(3)};
+
+    // Add the start of your for loop here
+    {
+        std::cout << i.x << std::endl;
+    }
+}
+```
 
 # Initializer Lists & Namespaces
 
@@ -395,8 +430,8 @@ int main() {
 }
 ```
 
-    ## constructing A pointing to 0x55bee7074eb0
-    ## destructing A, which pointed to 0x55bee7074eb0
+    ## constructing A pointing to 0x56312a882eb0
+    ## destructing A, which pointed to 0x56312a882eb0
 
 ### Copy Constructor
 
@@ -426,10 +461,10 @@ int main(){
 }
 ```
 
-    ## constructing A pointing to 0x556c3991eeb0
-    ## copy construction, old 0 other's 0x556c3991eeb0 new 0x556c3991fee0
-    ## destructing A, which pointed to 0x556c3991fee0
-    ## destructing A, which pointed to 0x556c3991eeb0
+    ## constructing A pointing to 0x56162e79beb0
+    ## copy construction, old 0 other's 0x56162e79beb0 new 0x56162e79cee0
+    ## destructing A, which pointed to 0x56162e79cee0
+    ## destructing A, which pointed to 0x56162e79beb0
 
 ### Copy Assignment
 
@@ -460,11 +495,11 @@ int main() {
 }
 ```
 
-    ## constructing A pointing to 0x5619c7d06eb0
-    ## constructing A pointing to 0x5619c7d07ee0
-    ## copy assignment, old 0x5619c7d07ee0 other's 0x5619c7d06eb0 new 0x5619c7d07f00
-    ## destructing A, which pointed to 0x5619c7d07f00
-    ## destructing A, which pointed to 0x5619c7d06eb0
+    ## constructing A pointing to 0x55f093a48eb0
+    ## constructing A pointing to 0x55f093a49ee0
+    ## copy assignment, old 0x55f093a49ee0 other's 0x55f093a48eb0 new 0x55f093a49f00
+    ## destructing A, which pointed to 0x55f093a49f00
+    ## destructing A, which pointed to 0x55f093a48eb0
 
 ### Move Constructor
 
@@ -495,9 +530,9 @@ int main() {
 }
 ```
 
-    ## constructing A pointing to 0x556f57131eb0
-    ## move construction, old 0 other's 0x556f57131eb0 new 0x556f57131eb0
-    ## destructing A, which pointed to 0x556f57131eb0
+    ## constructing A pointing to 0x5631729fdeb0
+    ## move construction, old 0 other's 0x5631729fdeb0 new 0x5631729fdeb0
+    ## destructing A, which pointed to 0x5631729fdeb0
     ## destructing A, which pointed to 0
 
 ### Move Assignment
@@ -533,9 +568,9 @@ int main() {
 }
 ```
 
-    ## constructing A pointing to 0x5579e7d73eb0
-    ## move assignment, old 0 other's 0x5579e7d73eb0 new 0x5579e7d73eb0
-    ## destructing A, which pointed to 0x5579e7d73eb0
+    ## constructing A pointing to 0x558c923f9eb0
+    ## move assignment, old 0 other's 0x558c923f9eb0 new 0x558c923f9eb0
+    ## destructing A, which pointed to 0x558c923f9eb0
     ## destructing A, which pointed to 0
 
 ### Task
@@ -551,6 +586,35 @@ Create a struct which has the following:
 
 Once you have defined these, write a program which uses each of them,
 printing all 5 strings.
+
+``` cpp
+struct ownership_class{
+    // Make an attribute here
+
+    // Make a default constructor here
+    
+    // Make a copy constructor here
+
+    // Make a move constructor here
+
+    // Make a copy assignment operator here
+
+    // Make a move assignment operator here
+    
+};
+
+ownership_class test_function() {
+    return ownership_class();
+}
+
+int main() {
+    ownership_class a; // Default construct
+    ownership_class b{a}; // Copy construct
+    ownership_class c{test_function()}; // Move construct
+    ownership_class d = a; // Copy assignment
+    ownership_class c = test_function(); // Move assignment
+}
+```
 
 #### Post task notes
 
@@ -593,14 +657,16 @@ Move semantics use r-value and copy semantics use l-value.
 
 ``` cpp
 #include "A.hpp"
-A cool(){return A(5);}
-int main(){
+A cool() {
+    return A(5);
+}
+int main() {
     A x = cool();
 }
 ```
 
-    ## constructing A pointing to 0x555898949eb0
-    ## destructing A, which pointed to 0x555898949eb0
+    ## constructing A pointing to 0x55f37240aeb0
+    ## destructing A, which pointed to 0x55f37240aeb0
 
 ## Smart Pointers
 
@@ -639,12 +705,12 @@ int main() {
 }
 ```
 
-    ## constructing A pointing to 0x563fce96eed0
-    ## constructing A pointing to 0x563fce96ff20
-    ## destructing A, which pointed to 0x563fce96ff20
-    ## constructing A pointing to 0x563fce96ff20
-    ## destructing A, which pointed to 0x563fce96ff20
-    ## destructing A, which pointed to 0x563fce96eed0
+    ## constructing A pointing to 0x56450ae8bed0
+    ## constructing A pointing to 0x56450ae8cf20
+    ## destructing A, which pointed to 0x56450ae8cf20
+    ## constructing A pointing to 0x56450ae8cf20
+    ## destructing A, which pointed to 0x56450ae8cf20
+    ## destructing A, which pointed to 0x56450ae8bed0
 
 We cannot copy a unique pointer, we can only move it. This prevents two
 separate objects owning the object that is pointed to.
@@ -658,7 +724,7 @@ int main() {
 }
 ```
 
-    ## /home/cameron/Documents/NULearning/cpp/.tmp_c/pHO1H.cpp:5:24: error: call to deleted constructor of 'std::unique_ptr<A>'
+    ## /home/cameron/Documents/NULearning/cpp/.tmp_c/4yFD1.cpp:5:24: error: call to deleted constructor of 'std::unique_ptr<A>'
     ##     std::unique_ptr<A> b = a;
     ##                        ^   ~
     ## /usr/bin/../lib64/gcc/x86_64-pc-linux-gnu/11.1.0/../../../../include/c++/11.1.0/bits/unique_ptr.h:468:7: note: 'unique_ptr' has been explicitly marked deleted here
@@ -676,8 +742,8 @@ int main() {
 }
 ```
 
-    ## constructing A pointing to 0x5630c7496ed0
-    ## destructing A, which pointed to 0x5630c7496ed0
+    ## constructing A pointing to 0x556ab9878ed0
+    ## destructing A, which pointed to 0x556ab9878ed0
 
 #### Exception Memory Safety
 
@@ -699,9 +765,9 @@ int main() {
 }
 ```
 
-    ## constructing A pointing to 0x55e8175b7ed0
-    ## constructing A pointing to 0x55e8175b8f20
-    ## destructing A, which pointed to 0x55e8175b8f20
+    ## constructing A pointing to 0x5589a59aaed0
+    ## constructing A pointing to 0x5589a59abf20
+    ## destructing A, which pointed to 0x5589a59abf20
 
 #### Loaning
 
@@ -744,8 +810,8 @@ int main(){
 }
 ```
 
-    ## constructing A pointing to 0x55b581159ed0
-    ## destructing A, which pointed to 0x55b581159ed0
+    ## constructing A pointing to 0x55d3f9a1ced0
+    ## destructing A, which pointed to 0x55d3f9a1ced0
 
 ### Weak
 
@@ -787,12 +853,12 @@ int main() {
 }
 ```
 
-    ## Constructor 0x55b24d700ec0
-    ## Constructor 0x55b24d701f00
-    ## Constructor 0x55b24d701f30
-    ## Constructor 0x55b24d701f60
-    ## Destructor 0x55b24d701f60
-    ## Destructor 0x55b24d701f30
+    ## Constructor 0x562909a59ec0
+    ## Constructor 0x562909a5af00
+    ## Constructor 0x562909a5af30
+    ## Constructor 0x562909a5af60
+    ## Destructor 0x562909a5af60
+    ## Destructor 0x562909a5af30
 
 ### Deleter
 
@@ -809,6 +875,18 @@ int main() {
     addrinfo* info;
     getaddrinfo("127.0.0.1", "80", &hints, &info);
     auto a = std::unique_ptr<addrinfo, decltype(&freeaddrinfo)>(info, freeaddrinfo);
+}
+```
+
+### Task
+
+1.  Store an integer in a unique pointer using `make_unique`
+
+``` cpp
+#include <memory>
+
+int main(){
+    // Put unique pointer here
 }
 ```
 
