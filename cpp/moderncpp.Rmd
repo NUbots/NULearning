@@ -171,7 +171,7 @@ int main(){
     const int a = 7;
     int b = 5;
     cool_print(a, b);
-    definitly_benign_print(a, b);
+    definitely_benign_print(a, b);
     cool_print(a, b);
 }
 ```
@@ -251,11 +251,11 @@ int main(){
     int x = 2;
     int y = 7;
 
-    int accumilate = 0;
+    int accumulate = 0;
     for (int i = 0; i < y; i++){
-        accumilate += x;
+        accumulate += x;
     }
-    std::cout << accumilate << std::endl;
+    std::cout << accumulate << std::endl;
 }
 ```
 
@@ -269,7 +269,7 @@ struct square {
     int height;
 
     int get_x() {
-        reuturn x;
+        return x;
     }
 
     int get_y() {
@@ -317,8 +317,7 @@ int main(){
     // Range-based for loops automatically create iterators for containers
     // which support them, such as std::array, and dereference them for us. 
     // You should usually use `const auto&`, `auto&` (or `auto&&`) for these 
-    // variables, because they're huge, ugly, std::iterator types which are 
-    // hard to read
+    // variables, because it's convention and it's nice
     for (const auto& letter : letters) {
         std::cout << letter << std::endl;
     }
