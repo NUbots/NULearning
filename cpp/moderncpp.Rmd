@@ -240,7 +240,7 @@ If you're confused about such a case, there are many other resources explaining 
 The rule when reading types in C++ is that you should read "from right to left".
 This manifests as `const` applying to the thing immediately to its left.
 If there isn't anything to the left, it applies to the thing on its right - please don't use ["East const"](https://isocpp.org/wiki/faq/const-correctness#const-ref-alt) though...
-
+e.g. `const int*` and `int const*` are both a pointer to a constant int, `int* const` is a const pointer to an int and `const int* const` or `int const* const` is a const pointer to a const int.
 ## Task
 
 a. Add `const` to the following variables that don't change.
@@ -902,4 +902,3 @@ Usually, a vector is better as we often do more reads than insertion and removal
 This is an associative data structure which associates values to keys.
 It can either be a red-black tree ([std::map](https://en.cppreference.com/w/cpp/container/map)), or a hash map ([std::unordered_map](https://en.cppreference.com/w/cpp/container/unordered_map)).
 Maps are bad for cache-locality and they should be avoided where possible in performance critical code.
-
