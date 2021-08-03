@@ -116,6 +116,7 @@ struct A{
 
 `class` has all its members private by default. 
 In c++ a `struct` is a `class` that has all its members public by default.
+Typically structs are chosen for types which are simply collections of other types, while classes are chosen to represent higher order objects.
 
 # Free
 
@@ -125,7 +126,8 @@ The terms `free` and `delete` are often used interchangably by C++ developers, a
 
 # Const
 
-Const declares a type immutable, that is that the value is read only and cannot be mutated.
+The `const` keyword declares a type immutable, that is that the value is read only and cannot be mutated.
+The `const`-ness of a variable can be changed with `const_cast`, but this should be used _exceptionally rarely_.
 
 ## Variables
 
@@ -149,8 +151,11 @@ int main(){
 
 ## Parameters
 
-This is usually used with pass by reference, but can be used with pass by value even though that would usually be pointless.
-Having a pass by reference parameter declared as constant allows the caller to be sure that the parameter they pass in will not be changed.
+This is usually used when passing parameters by reference, but can be used with pass by value even though doing so is usually pointless.
+
+**Bonus question:** Why is it usually pointless?
+
+Having a "pass by reference" parameter declared as constant allows the caller to be sure that the parameter they pass in will not be changed.
 
 ```{cpp}
 #include <iostream>
@@ -158,7 +163,7 @@ void cool_print(const int& x, const int& y){
     std::cout << "x " << x << " y " << y << std::endl;
 }
 
-void definitly_benign_print(const int& x, int& y){
+void definitely_benign_print(const int& x, int& y){
     std::cout << "x " << x << " y " << y++ << std::endl;
 }
 
@@ -174,7 +179,7 @@ int main(){
 
 ## Methods
 
-To add const to a method add the keyword to the end of the signature. This means that the method cannot mutate any of the attributes.
+To add const to a method, add the keyword to the end of the signature. This means that the method cannot mutate any of the attributes.
 
 If there is an instance of a type declared const it cannot call any method that is not declared const.
 
@@ -206,7 +211,7 @@ int main(){
 ## Const Type
 
 The `const` version is actually a distinct type to the original type but `c++` can implicitly cast to a `const` type from the non-const type.
-e.g. `std::array<const int, 1>` and `std::array<int, 1>` are distinct types, this can be observed by using the subscript operator as it will return `const int&` and `int&` respectively.
+e.g. `std::array<const int, 1>` and `std::array<int, 1>` are distinct types, this can be observed by using the subscript operator, which returns `const int&` and `int&` respectively.
 
 ``` {cpp}
 template <typename T>
@@ -227,11 +232,18 @@ In this example we cannot convert from `simple_container<int>` to `simple_contai
 
 ## Raw Pointers
 
-There are some caveats with raw pointers, but we don't use raw pointers, so if that ever is the case there are many other resources explaining what is happening.
+There are some caveats with raw pointers (see definition in [ownership](#raw-pointers)), but we _very rarely_ use raw pointers.
+If you're confused about such a case, there are many other resources explaining what is happening.
+
+## How to Read `const` Specifiers
+
+The rule when reading types in C++ is that you should read "from right to left".
+This manifests as `const` applying to the thing immediately to its left.
+If there isn't anything to the left, it applies to the thing on its right - please don't use ["East const"](https://isocpp.org/wiki/faq/const-correctness#const-ref-alt) though...
 
 ## Task
 
-a. Add const to the following variables that don't change.
+a. Add `const` to the following variables that don't change.
 
 ``` cpp
 #include <iostream>
@@ -247,7 +259,7 @@ int main(){
 }
 ```
 
-b. Add const to the following methods that don't mutate the attributes.
+b. Add `const` to the following methods that don't mutate the attributes.
 
 ``` cpp
 struct square {
@@ -289,9 +301,11 @@ int main() {
 }
 ```
 
-The `auto` keyword can also be used to define references and "raw" pointers, using `auto&` and `auto*`. The `const` keyword also applies as you would expect to `auto` declarations.
+The `auto` keyword can also be used to define references and "raw" pointers, using `auto&` and `auto*`.
+The `const` keyword also applies as you would expect to `auto` declarations.
 
-Some C++ people think you should "almost always [use] auto", but we don't. Our most common use of `auto` is for the iterator's object in a range-based `for` loop, as in the following example:
+Some C++ people think you should "almost always [use] auto", but we don't.
+Our most common use of `auto` is for the iterator's object in a range-based `for` loop, as in the following example:
 
 ```{cpp}
 #include <iostream>
@@ -313,7 +327,8 @@ int main(){
 
 ### DO NOT USE `auto` FOR EIGEN TYPES
 
-Eigen's docs list using the `auto` keyword for their types as a [common pitfall](https://eigen.tuxfamily.org/dox/TopicPitfalls.html). This is mostly because Eigen uses intermediate types all the time with many implicit conversions, which are not at all obvious to the reader.
+Eigen's docs list using the `auto` keyword for their types as a [common pitfall](https://eigen.tuxfamily.org/dox/TopicPitfalls.html).
+This is mostly because Eigen uses intermediate types all the time with many implicit conversions, which are not at all obvious to the reader.
 
 ### Task
 
@@ -350,7 +365,8 @@ int main() {
 
 # Initializer Lists & Namespaces
 
-Initializer lists can be used in constructors to initialise values for member variables, even if they're const. Here is an example of the syntax:
+Initializer lists can be used in constructors to initialise values for member variables, even if they're const.
+Here is an example of the syntax:
 
 ``` cpp
 #include "kev/FooLongName.hpp"
@@ -364,13 +380,16 @@ This scope defines a namespace `baz` inside of the namespace `bar`.
     using Foo = kev::FooLongName;
 ```
 
-This is a type alias. These serve the same function as `typedef` statements, except they don't declare a new type like `typedef`s do. These can make things more concise but we don't use them often, for the sake of clarity over conciseness.
+This is a type alias.
+These serve the same function as `typedef` statements, except they don't declare a new type like `typedef`s do.
+These can make things more concise but we don't use them often, for the sake of clarity over conciseness.
 
 ``` cpp
     using kev::FooLongName::getAlternativeConfig;
 ```
 
-Adds this name into this namespace. We do use these often, to import function names, so we don't have huge, long function names within four nested namespaces
+Adds this name into this namespace.
+We do use these often, to import function names, so we don't have huge, long function names within four nested namespaces
 
 ``` cpp
     class A {
@@ -395,9 +414,14 @@ Adds this name into this namespace. We do use these often, to import function na
 
 (Note that if a member variable or object has no default constructor, it must be initialised using an initializer list.)
 
-This example makes liberal use of _namespaces_. Namespaces let us separate functions and objects into different spots where their symbols won't conflict. For example, we can have a function in the `bar::baz` namespace called `run()` with the same signature (besides the namespace) as `foo::run()`, or even `bar::run()`.
+This example makes liberal use of _namespaces_.
+Namespaces let us separate functions and objects into different spots where their symbols won't conflict.
+For example, we can have a function in the `bar::baz` namespace called `run()` with the same signature (besides the namespace) as `foo::run()`, or even `bar::run()`.
 
-**Anonymous namespaces** are namespaces which don't have names. These restrict use of the things inside of the namespace to the things inside the same file as the things in the anonymous namespace. Anonymous namespaces [should not be used in headers](https://wiki.sei.cmu.edu/confluence/display/cplusplus/DCL59-CPP.+Do+not+define+an+unnamed+namespace+in+a+header+file#:~:text=Do%20not%20define%20an%20unnamed%20namespace%20in%20a%20header%20file&text=When%20an%20unnamed%20namespace%20is,used%20within%20that%20translation%20unit.). Here is an example using an anonymous namespace:
+**Anonymous namespaces** are namespaces which don't have names.
+These restrict use of the things inside of the namespace to the things inside the same file as the things in the anonymous namespace.
+Anonymous namespaces [should not be used in headers](https://wiki.sei.cmu.edu/confluence/display/cplusplus/DCL59-CPP.+Do+not+define+an+unnamed+namespace+in+a+header+file#:~:text=Do%20not%20define%20an%20unnamed%20namespace%20in%20a%20header%20file&text=When%20an%20unnamed%20namespace%20is,used%20within%20that%20translation%20unit.).
+Here is an example using an anonymous namespace:
 
 ``` cpp
 #include "foo.hpp"
@@ -419,18 +443,19 @@ baz_type foo::baz() {
 
 # Object Ownership
 
-The model for resource management, e.g. heap memory, we use is called object ownership. This is where each object has something, usually another object, that is responsible for freeing the resource.
+The model for resource management, e.g. heap memory, we use is called object ownership.
+This is where each object has something, usually another object, that is responsible for freeing the resource.
 
 ## Basic Functions
 
-Firstly we'll create an object that owns some heap memory and will print out all the common functions that deal with ownership.
+Firstly we'll create an object that owns some heap memory, then we'll print out all the common functions that deal with ownership.
 
 ### Attributes
 
 ``` cpp
 struct A {
     int* x; // Usually you shouldn't use "raw" pointers like this
-            // this is just for illustrative purposes
+            // This is just for illustrative purposes
 };
 ```
 
@@ -465,7 +490,9 @@ int main() {
 
 ### Copy Constructor
 
-For copy construction we will create a deep copy of the object. This means that we will follow any pointers and copy the objects they point to. We do this because there are no guarantees that the objects pointed to will not be deconstructed by something else.
+For copy construction we will create a deep copy of the object.
+This means that we will follow any pointers and copy the objects they point to.
+We do this because there are no guarantees that the objects pointed to will not be deconstructed by something else.
 
 We do not gain any ownership over anything relating to the parameter but we do now own the newly constructed integer.
 
@@ -516,7 +543,8 @@ int main() {
 
 ### Move Constructor
 
-For a move constructor the parameter that is passed has had its ownership yielded, so we can be sure that nothing else will use or free the passed in resources. This allows us to do a shallow copy of the pointed to values, this means that we can just copy the pointers.
+For a move constructor the parameter that is passed has had its ownership yielded, so we can be sure that nothing else will use or free the passed in resources.
+This allows us to do a shallow copy of the pointed to values, this means that we can just copy the pointers.
 
 ``` cpp
 // Move constructor
@@ -614,9 +642,11 @@ int main() {
 
 #### Post task notes
 
-The copy and move constructors/operators along with the destructor, are known as the special member functions. They are automatically defined for all classes and structs, unless you provide a definition for them yourself. 
+The copy and move constructors/operators along with the destructor, are known as the special member functions.
+They are automatically defined for all classes and structs, unless you provide a definition for them yourself. 
 
-The **Rule of 5** says that if you define a non-default destructor, you should define all 5 special member functions explicitly or delete them. The following example implements a non-default destructor to handle a class's file descriptor, abiding by the rule of 5:
+The **Rule of 5** says that if you define a non-default destructor, you should define all 5 special member functions explicitly or delete them.
+The following example implements a non-default destructor to handle a class's file descriptor, abiding by the rule of 5:
 
 ``` cpp
 A() : fd(-1); // Default file descriptor value
@@ -631,15 +661,19 @@ A& operator=(A& other) = delete;
 A& operator=(A&& other) = delete;
 ```
 
-## r and l values
+## l-values and r-values
 
-A l-value is a reference that references a value bound to a variable. In the function this is a single ampersand `&`.
+An l-value is a reference that references a value bound to a variable.
+In the function this is a single ampersand `&`.
 
-A r-value is a reference that is not bound to a variable. r-values are temporary and thus the ownership of the value is yielded to the function it is passed to. In the function this is a double ampersand `&&`.
+A r-value is a reference that is not bound to a variable.
+r-values are temporary and thus the ownership of the value is yielded to the function it is passed to.
+In the function, this is a double ampersand `&&`.
 
-A l-value can be converted to an r-value by using `std::move`. r-values are returned from functions that return by value.
+An l-value can be converted to an r-value by using `std::move`.
+r-values are returned from functions that return by value.
 
-Move semantics use r-value and copy semantics use l-value.
+Move semantics use r-values and copy semantics use l-values.
 
 ```{cpp}
 #include "A.hpp"
@@ -653,17 +687,25 @@ int main() {
 
 ## Smart Pointers
 
-To manage memory and ownership we use smart pointers. Smart pointers handle deletion of our objects for us with some caveats. A smart pointer owns the object that it points to.
+To manage memory and ownership we use smart pointers.
+Smart pointers handle deletion of our objects for us, with some caveats.
+A smart pointer owns the object that it points to.
 
 ### Raw Pointers
 
-A raw pointer is a pointer with no wrapping object, this is exactly what you would have used in **SENG1120**. You should use smart pointers over raw pointers whenever possible, which is when you have ownership of the memory, which is _almost_ always. The one common counterexample we run into is pointers to objects the webots API provides us. We can't call delete on these, because webots is in charge of managing them, so should not use smart pointers with them.
+A raw pointer is a pointer with no wrapping object.
+These are what you would have used in **SENG1120**. 
+You should use smart pointers over raw pointers whenever possible, which is when you have ownership of the memory, which is _almost_ always.
+The one common counterexample we run into is pointers to objects the webots API provides us.
+We can't call delete on these, because webots is in charge of managing them, so should not use smart pointers with them.
+Being able to (and having the responsibility to) call delete on something is the defining property of _ownership_.
 
 ### Unique
 
 A unique pointer is a smart pointer that will manage an object on the heap, deleting it when the pointer goes out of scope.
 
-Always use `std::make_unique` as this solves some problems. Never use `new`.
+Always use `std::make_unique` as this solves some problems.
+Never use `new`.
 
 ```{cpp}
 #include <memory>
@@ -677,7 +719,9 @@ int main() {
     std::unique_ptr<A> c = std::make_unique<A>(5);
 }
 ```
-We cannot copy a unique pointer, we can only move it. This prevents two separate objects owning the object that is pointed to.
+
+We cannot copy a unique pointer, we can only move it.
+This prevents two separate objects owning the object that is pointed to.
 
 ```{cpp}
 #include <memory>
@@ -699,7 +743,8 @@ int main() {
 
 #### Exception Memory Safety
 
-Smart pointers are safer when dealing with exceptions. Here the smart pointer is deleted whilst the raw pointer is leaked.
+Smart pointers are safer when dealing with exceptions.
+Here, the smart pointer is deleted whilst the raw pointer is leaked.
 
 ```{cpp}
 #include <memory>
@@ -718,7 +763,8 @@ int main() {
 
 #### Loaning
 
-If another object needs to temporarily have access to an object, you pass a reference to the pointed to object as a parameter. The object that gains temporary access and should assume that the object is freed after the function has returned.
+If another object needs to temporarily have access to an object, you should pass a reference to the pointed to object.
+The receiving object gains "temporary access" and it should assume that the object is freed after the function has returned.
 
 ``` cpp
 #include <memory>
@@ -728,17 +774,24 @@ void borrow_function(const int& x) {
 }
 int main() {
     auto a = std::make_unique<int>();
+    // Note that smart pointers have the same de-reference syntax
     borrow_function(*a);
 }
 ```
 
-Webots uses raw pointers to loan objects to us, which is why we do not use smart pointers with webots code.
+Webots uses raw pointers to loan objects to us, which is why we do not use smart pointers with webots code
+(to be clear, this is bad practice by the writers of webots).
 
 ### Shared
 
-A shared pointer allows for multiple objects to have access to the pointer. This is done by keeping a count of the number of shared pointers that point to an object with the object. When this count reaches zero both the counter and the object are deleted.
+A shared pointer allows for multiple objects to have access to the pointer.
+This is done by keeping a count of the number of shared pointers that point to an object with the object.
+When this count reaches zero, both the counter and the object are deleted.
+This paradigm of memory management is called "reference counting" and it's a common way of preventing leaks.
+Reference counting is the primary mechanism used by python's garbage collector to know what memory it can deallocate.
 
-Use of shared ownership is rare and always prefer unique pointers where you can.
+Use of shared ownership is rare.
+Unique pointers are always preferred to shared pointers.
 
 ```{cpp}
 #include <memory>
@@ -751,7 +804,9 @@ int main(){
 
 ### Weak
 
-A weak pointer points to an object that is pointed to by a shared pointer, but does not count towards the total count. When accessing the object pointed to the weak pointer is temporarily upgraded to a shared pointer. The main use of weak pointers is to get rid of circular references for shared pointers, often found in loops.
+A weak pointer points to an object that is pointed to by a shared pointer, but does not count towards the total count.
+When accessing the object pointed to the weak pointer is temporarily upgraded to a shared pointer.
+The main use of weak pointers is to get rid of circular references for shared pointers, often found in loops.
 
 ```{cpp}
 #include <memory>
@@ -806,7 +861,6 @@ int main() {
 
 a. Store an integer in a unique pointer using `make_unique`
 
-
 ``` cpp
 #include <memory>
 
@@ -815,28 +869,38 @@ int main(){
 }
 ```
 
-
 # Standard Library Features
 
 ## Array
 
-A `std::array` is similar to a c-style array but you specify the size of the array at compile-time. [Reference Page](https://en.cppreference.com/w/cpp/container/array).
+A `std::array` is similar to a c-style array (the "normal" type you should already know about), but you specify the size of the array at compile-time. [Reference Page](https://en.cppreference.com/w/cpp/container/array).
 
 ## Vector
 
-This is an array where we pass the size of the array at run-time, we can also resize the vector by adding elements. [Reference Page](https://en.cppreference.com/w/cpp/container/vector).
+This is an array where we pass the size of the array at run-time.
+We can also resize the vector by adding elements. [Reference Page](https://en.cppreference.com/w/cpp/container/vector).
 
-It has both a size and a capacity, size is the number of current elements and capacity is the current size of the underlying c array. When the size reaches capacity, c++ will allocate more memory and increase the capacity. Make sure that you try to reduce the number of time that the capacity is changed, one way to do this is to reserve space when you plan to add more than one element.
+It has both a size and a capacity.
+Size is the number of current elements and capacity is the current size of the underlying c array.
+When the size reaches capacity, c++ will allocate more memory and increase the capacity.
+Make sure that you try to reduce the number of times that the capacity is changed, to prevent unnecessary re-allocation performance overhead.
+One way to do this is to reserve space by specifying a size in the constructor.
 
-Removing and adding elements near the start of the vector is slow, see [Reference Page](https://en.cppreference.com/w/cpp/container/vector) for time complexities, use a deque when you plan to do this often.
+Removing and adding elements near the start of the vector is slow (see [Reference Page](https://en.cppreference.com/w/cpp/container/vector) for time complexities).
+Use a deque when you plan to do this often.
 
-If you have done java, this is similar to `ArrayList`.
+If you know Java, this is similar to `ArrayList`.
+It's C++'s basic dynamically sized array and it's the first data structure you should think of in most situations.
 
 ## Deque
 
-A `std::deque` implements a deque. The expansion of capacity and insertion or removal of elements at the ends is much faster than a vector, but takes up more memory and access is slower. Usually a vector is better as we usually do more reads than insertion and removals.
+A `std::deque` implements a deque (double-ended queue).
+The expansion of capacity and insertion or removal of elements at the ends is much faster than a vector, but takes up more memory, and accesses are slower.
+Usually, a vector is better as we often do more reads than insertion and removals.
 
 ## Map
 
-This is an associative data structure, it associates values to keys. It can either be a red-black tree, [std::map](https://en.cppreference.com/w/cpp/container/map), or a hash map, [std::unordered_map](https://en.cppreference.com/w/cpp/container/unordered_map).
+This is an associative data structure which associates values to keys.
+It can either be a red-black tree ([std::map](https://en.cppreference.com/w/cpp/container/map)), or a hash map ([std::unordered_map](https://en.cppreference.com/w/cpp/container/unordered_map)).
+Maps are bad for cache-locality and they should be avoided where possible in performance critical code.
 
