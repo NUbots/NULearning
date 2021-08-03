@@ -1,6 +1,6 @@
 ---
 title: Modern C++
-autor: "Cameron Murtagh"
+author: "Cameron Murtagh"
 date: "27/7/2021"
 output:
     md_document:
