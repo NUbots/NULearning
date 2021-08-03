@@ -117,6 +117,12 @@ struct A{
 `class` has all its members private by default. 
 In c++ a `struct` is a `class` that has all its members public by default.
 
+# Free
+
+When you (or a library) call `delete` on some heap allocated object, under the hood C++ is calling a standard C function called `free`.
+`free` gives the memory segment back to the operating system, "freeing" it.
+The terms `free` and `delete` are often used interchangably by C++ developers, although they are technically distinct.
+
 # Const
 
 Const declares a type immutable, that is that the value is read only and cannot be mutated.
