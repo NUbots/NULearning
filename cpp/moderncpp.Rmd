@@ -711,9 +711,9 @@ Never use `new`.
 #include "A.hpp"
 int main() {
     std::unique_ptr<A> a = std::make_unique<A>(5);
-    {
     // Make a scope so we can see this object get deleted before the one below gets constructed.
-    std::unique_ptr<A> b = std::make_unique<A>(5);
+    {
+        std::unique_ptr<A> b = std::make_unique<A>(5);
     }
     std::unique_ptr<A> c = std::make_unique<A>(5);
 }
