@@ -87,6 +87,9 @@ struct A{
     A& operator=(const A& other) {
         std::cout << "copy assignment, old " << x
         << " other's " << other.x;
+        if(x == other.x) {
+            return *this;
+        }
         int* _x = x; // stop allocation in the recently deleted spot
         x = new int(*other.x);
         if(x != nullptr) {
@@ -98,6 +101,9 @@ struct A{
     A& operator=(A&& other) {
         std::cout << "move assignment, old " << x
         << " other's " << other.x;
+        if(x == other.x) {
+            return *this;
+        }
         if(x != nullptr) {
             delete x;
             x = nullptr;
@@ -522,6 +528,9 @@ Similar to copy construction, but if this object has ownership of something we m
 A& operator=(const A& other) {
     std::cout << "copy assignment, old " << x
     << " other's " << other.x;
+    if(x == other.x) {
+        return *this;
+    }
     if(x != nullptr) {
         delete x;
         x = nullptr;
@@ -576,6 +585,9 @@ Similar to move construction, but if this object has ownership of something we m
 A& operator=(A&& other) {
     std::cout << "move assignment, old " << x
     << " other's " << other.x;
+    if(x == other.x) {
+        return *this;
+    }
     if(x != nullptr){
         delete x;
         x = nullptr;
@@ -634,8 +646,8 @@ int main() {
     ownership_class a; // Default construct
     ownership_class b{a}; // Copy construct
     ownership_class c{test_function()}; // Move construct
-    ownership_class d = a; // Copy assignment
-    ownership_class c = test_function(); // Move assignment
+    b = a; // Copy assignment
+    c = test_function(); // Move assignment
 }
 ```
 

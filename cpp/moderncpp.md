@@ -51,10 +51,10 @@ int main(){
 }
 ```
 
-    ## /home/cameron/Documents/NULearning/cpp/.tmp_c/RK3Ga.cpp:3:7: error: cannot assign to variable 'x' with const-qualified type 'const int'
+    ## /home/cameron/Documents/NULearning/cpp/.tmp_c/JYFOG.cpp:3:7: error: cannot assign to variable 'x' with const-qualified type 'const int'
     ##     x ++;
     ##     ~ ^
-    ## /home/cameron/Documents/NULearning/cpp/.tmp_c/RK3Ga.cpp:2:15: note: variable 'x' declared const here
+    ## /home/cameron/Documents/NULearning/cpp/.tmp_c/JYFOG.cpp:2:15: note: variable 'x' declared const here
     ##     const int x = 1;
     ##     ~~~~~~~~~~^~~~~
     ## 1 error generated.
@@ -125,10 +125,10 @@ int main(){
 }
 ```
 
-    ## /home/cameron/Documents/NULearning/cpp/.tmp_c/vhEt2.cpp:20:5: error: 'this' argument to member function 'set_x' has type 'const T', but function is not marked const
+    ## /home/cameron/Documents/NULearning/cpp/.tmp_c/nAthV.cpp:20:5: error: 'this' argument to member function 'set_x' has type 'const T', but function is not marked const
     ##     b.set_x(5);
     ##     ^
-    ## /home/cameron/Documents/NULearning/cpp/.tmp_c/vhEt2.cpp:9:10: note: 'set_x' declared here
+    ## /home/cameron/Documents/NULearning/cpp/.tmp_c/nAthV.cpp:9:10: note: 'set_x' declared here
     ##     void set_x(const int& x_) {
     ##          ^
     ## 1 error generated.
@@ -156,10 +156,10 @@ int main(){
 }
 ```
 
-    ## /home/cameron/Documents/NULearning/cpp/.tmp_c/KC2Wj.cpp:11:7: error: no viable overloaded '='
+    ## /home/cameron/Documents/NULearning/cpp/.tmp_c/JT1U2.cpp:11:7: error: no viable overloaded '='
     ##     z = y;
     ##     ~ ^ ~
-    ## /home/cameron/Documents/NULearning/cpp/.tmp_c/KC2Wj.cpp:2:8: note: candidate function (the implicit copy assignment operator) not viable: no known conversion from 'simple_container<int>' to 'const simple_container<const int>' for 1st argument
+    ## /home/cameron/Documents/NULearning/cpp/.tmp_c/JT1U2.cpp:2:8: note: candidate function (the implicit copy assignment operator) not viable: no known conversion from 'simple_container<int>' to 'const simple_container<const int>' for 1st argument
     ## struct simple_container {
     ##        ^
     ## 1 error generated.
@@ -456,8 +456,8 @@ int main() {
 }
 ```
 
-    ## constructing A pointing to 0x55fbcbc00eb0
-    ## destructing A, which pointed to 0x55fbcbc00eb0
+    ## constructing A pointing to 0x5574fa5f5eb0
+    ## destructing A, which pointed to 0x5574fa5f5eb0
 
 ### Copy Constructor
 
@@ -487,10 +487,10 @@ int main(){
 }
 ```
 
-    ## constructing A pointing to 0x55cc5b65deb0
-    ## copy construction, old 0 other's 0x55cc5b65deb0 new 0x55cc5b65eee0
-    ## destructing A, which pointed to 0x55cc5b65eee0
-    ## destructing A, which pointed to 0x55cc5b65deb0
+    ## constructing A pointing to 0x55a5d0e2deb0
+    ## copy construction, old 0 other's 0x55a5d0e2deb0 new 0x55a5d0e2eee0
+    ## destructing A, which pointed to 0x55a5d0e2eee0
+    ## destructing A, which pointed to 0x55a5d0e2deb0
 
 ### Copy Assignment
 
@@ -502,6 +502,9 @@ something we must first clean that up.
 A& operator=(const A& other) {
     std::cout << "copy assignment, old " << x
     << " other's " << other.x;
+    if(x == other.x) {
+        return *this;
+    }
     if(x != nullptr) {
         delete x;
         x = nullptr;
@@ -521,11 +524,11 @@ int main() {
 }
 ```
 
-    ## constructing A pointing to 0x560a5b588eb0
-    ## constructing A pointing to 0x560a5b589ee0
-    ## copy assignment, old 0x560a5b589ee0 other's 0x560a5b588eb0 new 0x560a5b589f00
-    ## destructing A, which pointed to 0x560a5b589f00
-    ## destructing A, which pointed to 0x560a5b588eb0
+    ## constructing A pointing to 0x561a359dfeb0
+    ## constructing A pointing to 0x561a359e0ee0
+    ## copy assignment, old 0x561a359e0ee0 other's 0x561a359dfeb0 new 0x561a359e0f00
+    ## destructing A, which pointed to 0x561a359e0f00
+    ## destructing A, which pointed to 0x561a359dfeb0
 
 ### Move Constructor
 
@@ -556,9 +559,9 @@ int main() {
 }
 ```
 
-    ## constructing A pointing to 0x55e368cdfeb0
-    ## move construction, old 0 other's 0x55e368cdfeb0 new 0x55e368cdfeb0
-    ## destructing A, which pointed to 0x55e368cdfeb0
+    ## constructing A pointing to 0x5625ff046eb0
+    ## move construction, old 0 other's 0x5625ff046eb0 new 0x5625ff046eb0
+    ## destructing A, which pointed to 0x5625ff046eb0
     ## destructing A, which pointed to 0
 
 ### Move Assignment
@@ -571,6 +574,9 @@ something we must first clean that up.
 A& operator=(A&& other) {
     std::cout << "move assignment, old " << x
     << " other's " << other.x;
+    if(x == other.x) {
+        return *this;
+    }
     if(x != nullptr){
         delete x;
         x = nullptr;
@@ -594,9 +600,9 @@ int main() {
 }
 ```
 
-    ## constructing A pointing to 0x555e94cdceb0
-    ## move assignment, old 0 other's 0x555e94cdceb0 new 0x555e94cdceb0
-    ## destructing A, which pointed to 0x555e94cdceb0
+    ## constructing A pointing to 0x56423dda6eb0
+    ## move assignment, old 0 other's 0x56423dda6eb0 new 0x56423dda6eb0
+    ## destructing A, which pointed to 0x56423dda6eb0
     ## destructing A, which pointed to 0
 
 ### Task
@@ -637,8 +643,8 @@ int main() {
     ownership_class a; // Default construct
     ownership_class b{a}; // Copy construct
     ownership_class c{test_function()}; // Move construct
-    ownership_class d = a; // Copy assignment
-    ownership_class c = test_function(); // Move assignment
+    b = a; // Copy assignment
+    c = test_function(); // Move assignment
 }
 ```
 
@@ -691,8 +697,8 @@ int main() {
 }
 ```
 
-    ## constructing A pointing to 0x55ab085faeb0
-    ## destructing A, which pointed to 0x55ab085faeb0
+    ## constructing A pointing to 0x563289f47eb0
+    ## destructing A, which pointed to 0x563289f47eb0
 
 ## Smart Pointers
 
@@ -733,12 +739,12 @@ int main() {
 }
 ```
 
-    ## constructing A pointing to 0x55fabc027ed0
-    ## constructing A pointing to 0x55fabc028f20
-    ## destructing A, which pointed to 0x55fabc028f20
-    ## constructing A pointing to 0x55fabc028f20
-    ## destructing A, which pointed to 0x55fabc028f20
-    ## destructing A, which pointed to 0x55fabc027ed0
+    ## constructing A pointing to 0x560be4268ed0
+    ## constructing A pointing to 0x560be4269f20
+    ## destructing A, which pointed to 0x560be4269f20
+    ## constructing A pointing to 0x560be4269f20
+    ## destructing A, which pointed to 0x560be4269f20
+    ## destructing A, which pointed to 0x560be4268ed0
 
 We cannot copy a unique pointer, we can only move it. This prevents two
 separate objects owning the object that is pointed to.
@@ -752,7 +758,7 @@ int main() {
 }
 ```
 
-    ## /home/cameron/Documents/NULearning/cpp/.tmp_c/ktc7V.cpp:5:24: error: call to deleted constructor of 'std::unique_ptr<A>'
+    ## /home/cameron/Documents/NULearning/cpp/.tmp_c/6zfoT.cpp:5:24: error: call to deleted constructor of 'std::unique_ptr<A>'
     ##     std::unique_ptr<A> b = a;
     ##                        ^   ~
     ## /usr/bin/../lib64/gcc/x86_64-pc-linux-gnu/11.1.0/../../../../include/c++/11.1.0/bits/unique_ptr.h:468:7: note: 'unique_ptr' has been explicitly marked deleted here
@@ -770,8 +776,8 @@ int main() {
 }
 ```
 
-    ## constructing A pointing to 0x561f9f4e3ed0
-    ## destructing A, which pointed to 0x561f9f4e3ed0
+    ## constructing A pointing to 0x556910789ed0
+    ## destructing A, which pointed to 0x556910789ed0
 
 #### Exception Memory Safety
 
@@ -793,9 +799,9 @@ int main() {
 }
 ```
 
-    ## constructing A pointing to 0x557a8779bed0
-    ## constructing A pointing to 0x557a8779cf20
-    ## destructing A, which pointed to 0x557a8779cf20
+    ## constructing A pointing to 0x55bce977aed0
+    ## constructing A pointing to 0x55bce977bf20
+    ## destructing A, which pointed to 0x55bce977bf20
 
 #### Loaning
 
@@ -844,8 +850,8 @@ int main(){
 }
 ```
 
-    ## constructing A pointing to 0x55eff9e08ed0
-    ## destructing A, which pointed to 0x55eff9e08ed0
+    ## constructing A pointing to 0x5621bb045ed0
+    ## destructing A, which pointed to 0x5621bb045ed0
 
 ### Weak
 
@@ -887,12 +893,12 @@ int main() {
 }
 ```
 
-    ## Constructor 0x564e4fda0ec0
-    ## Constructor 0x564e4fda1f00
-    ## Constructor 0x564e4fda1f30
-    ## Constructor 0x564e4fda1f60
-    ## Destructor 0x564e4fda1f60
-    ## Destructor 0x564e4fda1f30
+    ## Constructor 0x55a659393ec0
+    ## Constructor 0x55a659394f00
+    ## Constructor 0x55a659394f30
+    ## Constructor 0x55a659394f60
+    ## Destructor 0x55a659394f60
+    ## Destructor 0x55a659394f30
 
 ### Deleter
 
