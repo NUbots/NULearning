@@ -1,5 +1,5 @@
 ---
-autor: Cameron Murtagh
+author: Cameron Murtagh
 date: 27/7/2021
 output:
   md_document:
@@ -10,12 +10,24 @@ title: Modern C++
 # Struct
 
 `class` has all its members private by default. In c++ a `struct` is a
-`class` that has all its members public by default.
+`class` that has all its members public by default. Typically structs
+are chosen for types which are simply collections of other types, while
+classes are chosen to represent higher order objects.
+
+# Free
+
+When you (or a library) call `delete` on some heap allocated object,
+under the hood C++ is calling a standard C function called `free`.
+`free` gives the memory segment back to the operating system, “freeing”
+it. The terms `free` and `delete` are often used interchangably by C++
+developers, although they are technically distinct.
 
 # Const
 
-Const declares a type immutable, that is that the value is read only and
-cannot be mutated.
+The `const` keyword declares a type immutable, that is that the value is
+read only and cannot be mutated. The `const`-ness of a variable can be
+changed with `const_cast`, but this should be used *exceptionally
+rarely*.
 
 ## Variables
 
@@ -39,20 +51,23 @@ int main(){
 }
 ```
 
-    ## /home/cameron/Documents/NULearning/cpp/.tmp_c/0dbWw.cpp:3:7: error: cannot assign to variable 'x' with const-qualified type 'const int'
+    ## /home/cameron/Documents/NULearning/cpp/.tmp_c/RK3Ga.cpp:3:7: error: cannot assign to variable 'x' with const-qualified type 'const int'
     ##     x ++;
     ##     ~ ^
-    ## /home/cameron/Documents/NULearning/cpp/.tmp_c/0dbWw.cpp:2:15: note: variable 'x' declared const here
+    ## /home/cameron/Documents/NULearning/cpp/.tmp_c/RK3Ga.cpp:2:15: note: variable 'x' declared const here
     ##     const int x = 1;
     ##     ~~~~~~~~~~^~~~~
     ## 1 error generated.
 
 ## Parameters
 
-This is usually used with pass by reference, but can be used with pass
-by value even though that would usually be pointless. Having a pass by
-reference parameter declared as constant allows the caller to be sure
-that the parameter they pass in will not be changed.
+This is usually used when passing parameters by reference, but can be
+used with pass by value even though doing so is usually pointless.
+
+**Bonus question:** Why is it usually pointless?
+
+Having a “pass by reference” parameter declared as constant allows the
+caller to be sure that the parameter they pass in will not be changed.
 
 ``` cpp
 #include <iostream>
@@ -60,7 +75,7 @@ void cool_print(const int& x, const int& y){
     std::cout << "x " << x << " y " << y << std::endl;
 }
 
-void definitly_benign_print(const int& x, int& y){
+void definitely_benign_print(const int& x, int& y){
     std::cout << "x " << x << " y " << y++ << std::endl;
 }
 
@@ -68,7 +83,7 @@ int main(){
     const int a = 7;
     int b = 5;
     cool_print(a, b);
-    definitly_benign_print(a, b);
+    definitely_benign_print(a, b);
     cool_print(a, b);
 }
 ```
@@ -79,7 +94,7 @@ int main(){
 
 ## Methods
 
-To add const to a method add the keyword to the end of the signature.
+To add const to a method, add the keyword to the end of the signature.
 This means that the method cannot mutate any of the attributes.
 
 If there is an instance of a type declared const it cannot call any
@@ -110,10 +125,10 @@ int main(){
 }
 ```
 
-    ## /home/cameron/Documents/NULearning/cpp/.tmp_c/jYlRm.cpp:20:5: error: 'this' argument to member function 'set_x' has type 'const T', but function is not marked const
+    ## /home/cameron/Documents/NULearning/cpp/.tmp_c/vhEt2.cpp:20:5: error: 'this' argument to member function 'set_x' has type 'const T', but function is not marked const
     ##     b.set_x(5);
     ##     ^
-    ## /home/cameron/Documents/NULearning/cpp/.tmp_c/jYlRm.cpp:9:10: note: 'set_x' declared here
+    ## /home/cameron/Documents/NULearning/cpp/.tmp_c/vhEt2.cpp:9:10: note: 'set_x' declared here
     ##     void set_x(const int& x_) {
     ##          ^
     ## 1 error generated.
@@ -123,8 +138,8 @@ int main(){
 The `const` version is actually a distinct type to the original type but
 `c++` can implicitly cast to a `const` type from the non-const type.
 e.g. `std::array<const int, 1>` and `std::array<int, 1>` are distinct
-types, this can be observed by using the subscript operator as it will
-return `const int&` and `int&` respectively.
+types, this can be observed by using the subscript operator, which
+returns `const int&` and `int&` respectively.
 
 ``` cpp
 template <typename T>
@@ -141,10 +156,10 @@ int main(){
 }
 ```
 
-    ## /home/cameron/Documents/NULearning/cpp/.tmp_c/SaD4z.cpp:11:7: error: no viable overloaded '='
+    ## /home/cameron/Documents/NULearning/cpp/.tmp_c/KC2Wj.cpp:11:7: error: no viable overloaded '='
     ##     z = y;
     ##     ~ ^ ~
-    ## /home/cameron/Documents/NULearning/cpp/.tmp_c/SaD4z.cpp:2:8: note: candidate function (the implicit copy assignment operator) not viable: no known conversion from 'simple_container<int>' to 'const simple_container<const int>' for 1st argument
+    ## /home/cameron/Documents/NULearning/cpp/.tmp_c/KC2Wj.cpp:2:8: note: candidate function (the implicit copy assignment operator) not viable: no known conversion from 'simple_container<int>' to 'const simple_container<const int>' for 1st argument
     ## struct simple_container {
     ##        ^
     ## 1 error generated.
@@ -155,13 +170,24 @@ an explicit conversion defined.
 
 ## Raw Pointers
 
-There are some caveats with raw pointers, but we don’t use raw pointers,
-so if that ever is the case there are many other resources explaining
-what is happening.
+There are some caveats with raw pointers (see definition in
+[ownership](#raw-pointers)), but we *very rarely* use raw pointers. If
+you’re confused about such a case, there are many other resources
+explaining what is happening.
 
-## Task
+## How to Read `const` Specifiers
 
-1.  Add const to the following variables that don’t change.
+The rule when reading types in C++ is that you should read “from right
+to left”. This manifests as `const` applying to the thing immediately to
+its left. If there isn’t anything to the left, it applies to the thing
+on its right - please don’t use [“East
+const”](https://isocpp.org/wiki/faq/const-correctness#const-ref-alt)
+though… e.g. `const int*` and `int const*` are both a pointer to a
+constant int, `int* const` is a const pointer to an int and
+`const int* const` or `int const* const` is a const pointer to a const
+int. ## Task
+
+1.  Add `const` to the following variables that don’t change.
 
 ``` cpp
 #include <iostream>
@@ -169,15 +195,16 @@ int main(){
     int x = 2;
     int y = 7;
 
-    int accumilate = 0;
+    int accumulate = 0;
     for (int i = 0; i < y; i++){
-        accumilate += x;
+        accumulate += x;
     }
-    std::cout << accumilate << std::endl;
+    std::cout << accumulate << std::endl;
 }
 ```
 
-2.  Add const to the following methods that don’t mutate the attributes.
+2.  Add `const` to the following methods that don’t mutate the
+    attributes.
 
 ``` cpp
 struct square {
@@ -187,7 +214,7 @@ struct square {
     int height;
 
     int get_x() {
-        reuturn x;
+        return x;
     }
 
     int get_y() {
@@ -239,8 +266,7 @@ int main(){
     // Range-based for loops automatically create iterators for containers
     // which support them, such as std::array, and dereference them for us. 
     // You should usually use `const auto&`, `auto&` (or `auto&&`) for these 
-    // variables, because they're huge, ugly, std::iterator types which are 
-    // hard to read
+    // variables, because it's convention and it's nice
     for (const auto& letter : letters) {
         std::cout << letter << std::endl;
     }
@@ -387,15 +413,15 @@ another object, that is responsible for freeing the resource.
 
 ## Basic Functions
 
-Firstly we’ll create an object that owns some heap memory and will print
-out all the common functions that deal with ownership.
+Firstly we’ll create an object that owns some heap memory, then we’ll
+print out all the common functions that deal with ownership.
 
 ### Attributes
 
 ``` cpp
 struct A {
     int* x; // Usually you shouldn't use "raw" pointers like this
-            // this is just for illustrative purposes
+            // This is just for illustrative purposes
 };
 ```
 
@@ -430,8 +456,8 @@ int main() {
 }
 ```
 
-    ## constructing A pointing to 0x56312a882eb0
-    ## destructing A, which pointed to 0x56312a882eb0
+    ## constructing A pointing to 0x55fbcbc00eb0
+    ## destructing A, which pointed to 0x55fbcbc00eb0
 
 ### Copy Constructor
 
@@ -461,10 +487,10 @@ int main(){
 }
 ```
 
-    ## constructing A pointing to 0x56162e79beb0
-    ## copy construction, old 0 other's 0x56162e79beb0 new 0x56162e79cee0
-    ## destructing A, which pointed to 0x56162e79cee0
-    ## destructing A, which pointed to 0x56162e79beb0
+    ## constructing A pointing to 0x55cc5b65deb0
+    ## copy construction, old 0 other's 0x55cc5b65deb0 new 0x55cc5b65eee0
+    ## destructing A, which pointed to 0x55cc5b65eee0
+    ## destructing A, which pointed to 0x55cc5b65deb0
 
 ### Copy Assignment
 
@@ -495,11 +521,11 @@ int main() {
 }
 ```
 
-    ## constructing A pointing to 0x55f093a48eb0
-    ## constructing A pointing to 0x55f093a49ee0
-    ## copy assignment, old 0x55f093a49ee0 other's 0x55f093a48eb0 new 0x55f093a49f00
-    ## destructing A, which pointed to 0x55f093a49f00
-    ## destructing A, which pointed to 0x55f093a48eb0
+    ## constructing A pointing to 0x560a5b588eb0
+    ## constructing A pointing to 0x560a5b589ee0
+    ## copy assignment, old 0x560a5b589ee0 other's 0x560a5b588eb0 new 0x560a5b589f00
+    ## destructing A, which pointed to 0x560a5b589f00
+    ## destructing A, which pointed to 0x560a5b588eb0
 
 ### Move Constructor
 
@@ -530,9 +556,9 @@ int main() {
 }
 ```
 
-    ## constructing A pointing to 0x5631729fdeb0
-    ## move construction, old 0 other's 0x5631729fdeb0 new 0x5631729fdeb0
-    ## destructing A, which pointed to 0x5631729fdeb0
+    ## constructing A pointing to 0x55e368cdfeb0
+    ## move construction, old 0 other's 0x55e368cdfeb0 new 0x55e368cdfeb0
+    ## destructing A, which pointed to 0x55e368cdfeb0
     ## destructing A, which pointed to 0
 
 ### Move Assignment
@@ -568,9 +594,9 @@ int main() {
 }
 ```
 
-    ## constructing A pointing to 0x558c923f9eb0
-    ## move assignment, old 0 other's 0x558c923f9eb0 new 0x558c923f9eb0
-    ## destructing A, which pointed to 0x558c923f9eb0
+    ## constructing A pointing to 0x555e94cdceb0
+    ## move assignment, old 0 other's 0x555e94cdceb0 new 0x555e94cdceb0
+    ## destructing A, which pointed to 0x555e94cdceb0
     ## destructing A, which pointed to 0
 
 ### Task
@@ -641,19 +667,19 @@ A& operator=(A& other) = delete;
 A& operator=(A&& other) = delete;
 ```
 
-## r and l values
+## l-values and r-values
 
-A l-value is a reference that references a value bound to a variable. In
-the function this is a single ampersand `&`.
+An l-value is a reference that references a value bound to a variable.
+In the function this is a single ampersand `&`.
 
 A r-value is a reference that is not bound to a variable. r-values are
 temporary and thus the ownership of the value is yielded to the function
-it is passed to. In the function this is a double ampersand `&&`.
+it is passed to. In the function, this is a double ampersand `&&`.
 
-A l-value can be converted to an r-value by using `std::move`. r-values
+An l-value can be converted to an r-value by using `std::move`. r-values
 are returned from functions that return by value.
 
-Move semantics use r-value and copy semantics use l-value.
+Move semantics use r-values and copy semantics use l-values.
 
 ``` cpp
 #include "A.hpp"
@@ -665,24 +691,26 @@ int main() {
 }
 ```
 
-    ## constructing A pointing to 0x55f37240aeb0
-    ## destructing A, which pointed to 0x55f37240aeb0
+    ## constructing A pointing to 0x55ab085faeb0
+    ## destructing A, which pointed to 0x55ab085faeb0
 
 ## Smart Pointers
 
 To manage memory and ownership we use smart pointers. Smart pointers
-handle deletion of our objects for us with some caveats. A smart pointer
-owns the object that it points to.
+handle deletion of our objects for us, with some caveats. A smart
+pointer owns the object that it points to.
 
 ### Raw Pointers
 
-A raw pointer is a pointer with no wrapping object, this is exactly what
-you would have used in **SENG1120**. You should use smart pointers over
-raw pointers whenever possible, which is when you have ownership of the
+A raw pointer is a pointer with no wrapping object. These are what you
+would have used in **SENG1120**. You should use smart pointers over raw
+pointers whenever possible, which is when you have ownership of the
 memory, which is *almost* always. The one common counterexample we run
 into is pointers to objects the webots API provides us. We can’t call
 delete on these, because webots is in charge of managing them, so should
-not use smart pointers with them.
+not use smart pointers with them. Being able to (and having the
+responsibility to) call delete on something is the defining property of
+*ownership*.
 
 ### Unique
 
@@ -697,20 +725,20 @@ Always use `std::make_unique` as this solves some problems. Never use
 #include "A.hpp"
 int main() {
     std::unique_ptr<A> a = std::make_unique<A>(5);
-    {
     // Make a scope so we can see this object get deleted before the one below gets constructed.
-    std::unique_ptr<A> b = std::make_unique<A>(5);
+    {
+        std::unique_ptr<A> b = std::make_unique<A>(5);
     }
     std::unique_ptr<A> c = std::make_unique<A>(5);
 }
 ```
 
-    ## constructing A pointing to 0x56450ae8bed0
-    ## constructing A pointing to 0x56450ae8cf20
-    ## destructing A, which pointed to 0x56450ae8cf20
-    ## constructing A pointing to 0x56450ae8cf20
-    ## destructing A, which pointed to 0x56450ae8cf20
-    ## destructing A, which pointed to 0x56450ae8bed0
+    ## constructing A pointing to 0x55fabc027ed0
+    ## constructing A pointing to 0x55fabc028f20
+    ## destructing A, which pointed to 0x55fabc028f20
+    ## constructing A pointing to 0x55fabc028f20
+    ## destructing A, which pointed to 0x55fabc028f20
+    ## destructing A, which pointed to 0x55fabc027ed0
 
 We cannot copy a unique pointer, we can only move it. This prevents two
 separate objects owning the object that is pointed to.
@@ -724,7 +752,7 @@ int main() {
 }
 ```
 
-    ## /home/cameron/Documents/NULearning/cpp/.tmp_c/4yFD1.cpp:5:24: error: call to deleted constructor of 'std::unique_ptr<A>'
+    ## /home/cameron/Documents/NULearning/cpp/.tmp_c/ktc7V.cpp:5:24: error: call to deleted constructor of 'std::unique_ptr<A>'
     ##     std::unique_ptr<A> b = a;
     ##                        ^   ~
     ## /usr/bin/../lib64/gcc/x86_64-pc-linux-gnu/11.1.0/../../../../include/c++/11.1.0/bits/unique_ptr.h:468:7: note: 'unique_ptr' has been explicitly marked deleted here
@@ -742,12 +770,12 @@ int main() {
 }
 ```
 
-    ## constructing A pointing to 0x556ab9878ed0
-    ## destructing A, which pointed to 0x556ab9878ed0
+    ## constructing A pointing to 0x561f9f4e3ed0
+    ## destructing A, which pointed to 0x561f9f4e3ed0
 
 #### Exception Memory Safety
 
-Smart pointers are safer when dealing with exceptions. Here the smart
+Smart pointers are safer when dealing with exceptions. Here, the smart
 pointer is deleted whilst the raw pointer is leaked.
 
 ``` cpp
@@ -765,15 +793,15 @@ int main() {
 }
 ```
 
-    ## constructing A pointing to 0x5589a59aaed0
-    ## constructing A pointing to 0x5589a59abf20
-    ## destructing A, which pointed to 0x5589a59abf20
+    ## constructing A pointing to 0x557a8779bed0
+    ## constructing A pointing to 0x557a8779cf20
+    ## destructing A, which pointed to 0x557a8779cf20
 
 #### Loaning
 
 If another object needs to temporarily have access to an object, you
-pass a reference to the pointed to object as a parameter. The object
-that gains temporary access and should assume that the object is freed
+should pass a reference to the pointed to object. The receiving object
+gains “temporary access” and it should assume that the object is freed
 after the function has returned.
 
 ``` cpp
@@ -784,22 +812,28 @@ void borrow_function(const int& x) {
 }
 int main() {
     auto a = std::make_unique<int>();
+    // Note that smart pointers have the same de-reference syntax
     borrow_function(*a);
 }
 ```
 
 Webots uses raw pointers to loan objects to us, which is why we do not
-use smart pointers with webots code.
+use smart pointers with webots code (to be clear, this is bad practice
+by the writers of webots).
 
 ### Shared
 
 A shared pointer allows for multiple objects to have access to the
 pointer. This is done by keeping a count of the number of shared
 pointers that point to an object with the object. When this count
-reaches zero both the counter and the object are deleted.
+reaches zero, both the counter and the object are deleted. This paradigm
+of memory management is called “reference counting” and it’s a common
+way of preventing leaks. Reference counting is the primary mechanism
+used by python’s garbage collector to know what memory it can
+deallocate.
 
-Use of shared ownership is rare and always prefer unique pointers where
-you can.
+Use of shared ownership is rare. Unique pointers are always preferred to
+shared pointers.
 
 ``` cpp
 #include <memory>
@@ -810,8 +844,8 @@ int main(){
 }
 ```
 
-    ## constructing A pointing to 0x55d3f9a1ced0
-    ## destructing A, which pointed to 0x55d3f9a1ced0
+    ## constructing A pointing to 0x55eff9e08ed0
+    ## destructing A, which pointed to 0x55eff9e08ed0
 
 ### Weak
 
@@ -853,12 +887,12 @@ int main() {
 }
 ```
 
-    ## Constructor 0x562909a59ec0
-    ## Constructor 0x562909a5af00
-    ## Constructor 0x562909a5af30
-    ## Constructor 0x562909a5af60
-    ## Destructor 0x562909a5af60
-    ## Destructor 0x562909a5af30
+    ## Constructor 0x564e4fda0ec0
+    ## Constructor 0x564e4fda1f00
+    ## Constructor 0x564e4fda1f30
+    ## Constructor 0x564e4fda1f60
+    ## Destructor 0x564e4fda1f60
+    ## Destructor 0x564e4fda1f30
 
 ### Deleter
 
@@ -894,40 +928,47 @@ int main(){
 
 ## Array
 
-A `std::array` is similar to a c-style array but you specify the size of
-the array at compile-time. [Reference
+A `std::array` is similar to a c-style array (the “normal” type you
+should already know about), but you specify the size of the array at
+compile-time. [Reference
 Page](https://en.cppreference.com/w/cpp/container/array).
 
 ## Vector
 
-This is an array where we pass the size of the array at run-time, we can
+This is an array where we pass the size of the array at run-time. We can
 also resize the vector by adding elements. [Reference
 Page](https://en.cppreference.com/w/cpp/container/vector).
 
-It has both a size and a capacity, size is the number of current
+It has both a size and a capacity. Size is the number of current
 elements and capacity is the current size of the underlying c array.
 When the size reaches capacity, c++ will allocate more memory and
 increase the capacity. Make sure that you try to reduce the number of
-time that the capacity is changed, one way to do this is to reserve
-space when you plan to add more than one element.
+times that the capacity is changed, to prevent unnecessary re-allocation
+performance overhead. One way to do this is to reserve space by
+specifying a size in the constructor.
 
-Removing and adding elements near the start of the vector is slow, see
+Removing and adding elements near the start of the vector is slow (see
 [Reference Page](https://en.cppreference.com/w/cpp/container/vector) for
-time complexities, use a deque when you plan to do this often.
+time complexities). Use a deque when you plan to do this often.
 
-If you have done java, this is similar to `ArrayList`.
+If you know Java, this is similar to `ArrayList`. It’s C++’s basic
+dynamically sized array and it’s the first data structure you should
+think of in most situations.
 
 ## Deque
 
-A `std::deque` implements a deque. The expansion of capacity and
-insertion or removal of elements at the ends is much faster than a
-vector, but takes up more memory and access is slower. Usually a vector
-is better as we usually do more reads than insertion and removals.
+A `std::deque` implements a deque (double-ended queue). The expansion of
+capacity and insertion or removal of elements at the ends is much faster
+than a vector, but takes up more memory, and accesses are slower.
+Usually, a vector is better as we often do more reads than insertion and
+removals.
 
 ## Map
 
-This is an associative data structure, it associates values to keys. It
-can either be a red-black tree,
-[std::map](https://en.cppreference.com/w/cpp/container/map), or a hash
-map,
-[std::unordered_map](https://en.cppreference.com/w/cpp/container/unordered_map).
+This is an associative data structure which associates values to keys.
+It can either be a red-black tree
+([std::map](https://en.cppreference.com/w/cpp/container/map)), or a hash
+map
+([std::unordered_map](https://en.cppreference.com/w/cpp/container/unordered_map)).
+Maps are bad for cache-locality and they should be avoided where
+possible in performance critical code.
