@@ -1,12 +1,3 @@
----
-author: Cameron Murtagh
-date: 27/7/2021
-output:
-  md_document:
-    variant: gfm
-title: Modern C++
----
-
 # Struct
 
 `class` has all its members private by default. In c++ a `struct` is a
@@ -185,7 +176,9 @@ const”](https://isocpp.org/wiki/faq/const-correctness#const-ref-alt)
 though… e.g. `const int*` and `int const*` are both a pointer to a
 constant int, `int* const` is a const pointer to an int and
 `const int* const` or `int const* const` is a const pointer to a const
-int. ## Task
+int.
+
+## Task
 
 1.  Add `const` to the following variables that don’t change.
 
@@ -242,6 +235,7 @@ The compiler infers the type at compile time.
 int main() {
     auto x = 5;
     int y = x;
+    x = 5.5;
     std::cout << "x = " << x << ", y = " << y << std::endl;
 }
 ```
@@ -300,7 +294,7 @@ implicit conversions, which are not at all obvious to the reader.
 #include <iostream>
 struct T {
     int x;
-    T (cons int& x_) : x(x_) {}
+    T (const int& x_) : x(x_) {}
 }
 
 int main() {
